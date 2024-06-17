@@ -1,0 +1,24 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "-3000" : {
+
+    },
+    "+3000" : {
+
+    },
+    "home" : {
+
+    },
+    "Item %lld" : {
+
+    },
+    "onboarding" : {
+
+    }
+  },
+  "version" : "1.0"
+}
