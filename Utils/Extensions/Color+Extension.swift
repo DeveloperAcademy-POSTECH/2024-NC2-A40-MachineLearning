@@ -18,5 +18,5 @@ extension Color {
         self.init(.sRGB, red: red, green: green, blue: blue, opacity: opacity)
     }
     
-    static let blue = Color(hexColor: "2F74FF")
+    static let blueAccent = Color(hexColor: "2F74FF")
 }

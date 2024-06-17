@@ -9,10 +9,17 @@ import Foundation
 import SwiftUI
 
 extension Font {
+    // Bold
+    static let Bold28: Font = .custom("PretendardJP-Bold", size: 28)
+    static let Bold20: Font = .custom("PretendardJP-Bold", size: 20)
+    static let Bold18: Font = .custom("PretendardJP-Bold", size: 18)
+    static let Bold16: Font = .custom("PretendardJP-Bold", size: 16)
+    
     // SemiBold
     static let SemiBold28: Font = .custom("PretendardJP-SemiBold", size: 28)
     static let SemiBold20: Font = .custom("PretendardJP-SemiBold", size: 20)
     static let SemiBold18: Font = .custom("PretendardJP-SemiBold", size: 18)
+    static let SemiBold16: Font = .custom("PretendardJP-SemiBold", size: 16)
 
     //Medium
     static let Medium20: Font = .custom("PretendardJP-Medium", size: 20)
@@ -21,6 +28,8 @@ extension Font {
     
     // Light
     static let Light20: Font = .custom("PretendardJP-Light", size: 20)
+    static let Light18: Font = .custom("PretendardJP-Light", size: 18)
     static let Light16: Font = .custom("PretendardJP-Light", size: 16)
     static let Light12: Font = .custom("PretendardJP-Light", size: 12)
+    static let Light4: Font = .custom("PretendardJP-Light", size: 4)
 }

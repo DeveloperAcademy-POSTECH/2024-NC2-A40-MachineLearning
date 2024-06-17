@@ -21,15 +21,15 @@ struct SplashView: View {
                     }
                 }
             VStack (alignment: .leading, spacing: 12) {
-                Text("음성과").font(.Medium18)
-                Text("사진으로").font(.Medium18)
+                Text("음성과").font(.Light18)
+                Text("사진으로").font(.Light18)
                 ZStack {
                     HStack (spacing: 0) {
-                        Text("간편하게 기록").font(.SemiBold18).foregroundStyle(.blue)
-                        Text("하는 가계부").font(.Medium18)
+                        Text("간편하게 기록").font(.Bold18).foregroundStyle(Color.blueAccent)
+                        Text("하는 가계부").font(.Light18)
                     }
-                    Image(systemName: "waveform").font(.system(size: 18)).foregroundStyle(.blue).offset(y: -70)
-                    Image(systemName: "bolt.fill").font(.system(size: 18)).foregroundStyle(.blue).offset(y: -35)
+                    Image(systemName: "waveform").font(.system(size: 18)).foregroundStyle(Color.blueAccent).offset(y: -70)
+                    Image(systemName: "bolt.fill").font(.system(size: 18)).foregroundStyle(Color.blueAccent).offset(y: -35)
                 }
             }
         }
