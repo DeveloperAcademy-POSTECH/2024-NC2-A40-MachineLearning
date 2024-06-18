@@ -5,10 +5,10 @@
 //  Created by DevJonny on 2024/6/17.
 //
 
-import Foundation
+import SwiftUI
 
 class ViewStateManager: ObservableObject {
-    @Published var viewState: ViewState = .splash
+    @Published var viewState: ViewState = .home
 }
 
 enum ViewState {

@@ -16,9 +16,9 @@ struct ContentView: View {
         case .splash:
             SplashView()
         case .onboarding:
-            Text("onboarding")
+            OnboardingView()
         case .home:
-            Text("home")
+            HomeView()
         }
     }
 }

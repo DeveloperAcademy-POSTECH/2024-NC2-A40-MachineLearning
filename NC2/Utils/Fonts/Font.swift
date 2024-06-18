@@ -20,16 +20,20 @@ extension Font {
     static let SemiBold20: Font = .custom("PretendardJP-SemiBold", size: 20)
     static let SemiBold18: Font = .custom("PretendardJP-SemiBold", size: 18)
     static let SemiBold16: Font = .custom("PretendardJP-SemiBold", size: 16)
+    static let SemiBold13: Font = .custom("PretendardJP-SemiBold", size: 13)
 
     //Medium
     static let Medium20: Font = .custom("PretendardJP-Medium", size: 20)
+    static let Medium16: Font = .custom("PretendardJP-Medium", size: 16)
     static let Medium18: Font = .custom("PretendardJP-Medium", size: 18)
+    static let Medium14: Font = .custom("PretendardJP-Medium", size: 14)
     static let Medium12: Font = .custom("PretendardJP-Medium", size: 12)
+    static let Medium10: Font = .custom("PretendardJP-Medium", size: 10)
     
     // Light
     static let Light20: Font = .custom("PretendardJP-Light", size: 20)
     static let Light18: Font = .custom("PretendardJP-Light", size: 18)
     static let Light16: Font = .custom("PretendardJP-Light", size: 16)
     static let Light12: Font = .custom("PretendardJP-Light", size: 12)
-    static let Light4: Font = .custom("PretendardJP-Light", size: 4)
+    static let Light6: Font = .custom("PretendardJP-Light", size: 6)
 }

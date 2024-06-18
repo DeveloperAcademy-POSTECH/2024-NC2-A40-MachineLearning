@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+//
 struct OnboardingView: View {
     var body: some View {
         VStack (spacing: 0) {
@@ -21,7 +21,8 @@ struct OnboardingView: View {
             VStack (alignment: .leading) {
                 HStack (spacing: 0) {
                     Text("커스텀 ").font(.SemiBold16)
-                    Text("액션 버튼").font(.SemiBold16).foregroundStyle(Color.blueAccent)
+                    Text("액션 버튼").font(.SemiBold16)
+                        .foregroundStyle(.blue)
                     Text("을 눌러서").font(.Light16)
                 }
                 Text("가계 내역을 기록할 수 있어요!").font(.Light16)
@@ -30,13 +31,14 @@ struct OnboardingView: View {
                 Image(.onboardingActionButton)
                 Circle()
                     .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
-                    .foregroundColor(Color.blueAccent)
+                    .foregroundStyle(.blue)
                     .frame(width: 56, height: 56)
                     .background(Color.clear)
                     .offset(x: -80, y: 24)
                 HStack {
                     Spacer()
-                    Text("iPhone 15 Pro 이상 기종부터 가능.").font(.Light4).foregroundStyle(Color(hexColor: "929292"))
+                    Text("*iPhone 15 Pro 이상 기종부터 가능.").font(.Light6)
+                        .foregroundStyle(Color(hexColor: "929292"))
                 }
                 .padding(.horizontal, 20)
                 .offset(y: 90)
@@ -48,7 +50,8 @@ struct OnboardingView: View {
             VStack (alignment: .leading) {
                 HStack (spacing: 0) {
                     Text("잠금화면의 ").font(.SemiBold16)
-                    Text("위젯").font(.SemiBold16).foregroundStyle(Color.blueAccent)
+                    Text("위젯").font(.SemiBold16)
+                        .foregroundStyle(.blue)
                     Text("으로 빠르게").font(.Light16)
                 }
                 Text("가계 내역을 기록할 수 있어요!").font(.Light16)
@@ -58,7 +61,7 @@ struct OnboardingView: View {
                     .padding(.top, 30)
                 Circle()
                     .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
-                    .foregroundColor(Color.blueAccent)
+                    .foregroundStyle(.blue)
                     .frame(width: 73, height: 73)
                     .background(Color.clear)
                     .offset(x: -55, y: 60)
@@ -77,7 +80,7 @@ struct OnboardingView: View {
                     Spacer()
                 }
                 .padding(.vertical, 16)
-                .background(Color.blueAccent)
+                .background(.blue)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .padding(.horizontal, 20)
                 .padding(.bottom, 14)
