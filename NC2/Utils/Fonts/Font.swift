@@ -29,6 +29,7 @@ extension Font {
     static let Medium14: Font = .custom("PretendardJP-Medium", size: 14)
     static let Medium12: Font = .custom("PretendardJP-Medium", size: 12)
     static let Medium10: Font = .custom("PretendardJP-Medium", size: 10)
+    static let Medium8: Font = .custom("PretendardJP-Medium", size: 8)
     
     // Light
     static let Light20: Font = .custom("PretendardJP-Light", size: 20)

@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-struct Transaction: Identifiable {
+class Transaction: Identifiable {
     @Attribute(.unique) var id = UUID()
     var place: String
     var amount: Int
@@ -31,12 +31,12 @@ struct Transaction: Identifiable {
     }
 }
 
-enum TransactionType {
+enum TransactionType: Codable {
     case income
     case outcome
 }
 
-enum CategoryType: String, CaseIterable {
+enum CategoryType: String, CaseIterable, Codable {
     case none
     case food
     case education

@@ -6,22 +6,173 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
-    @State private var isWeeklyView: Bool = false
-    @State private var currentMonth: Date = Date()
-    @State private var selectedDate: Date = Date()
-    @State private var showingSheet = false
+    @ObservedObject var homeViewModel = HomeViewModel()
+    @State private var selectedTransaction: Transaction?
+    @State private var isEditMode = false
     
     var body: some View {
         ZStack {
-            // 플로팅 버튼
+            VStack(spacing: 0) {
+                // 상단바 영역
+                ZStack {
+                    HStack {
+                        Spacer().frame(width: 10)
+                        Image(.icon)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 60, height: 35, alignment: .center)
+                            .clipped()
+                        Spacer()
+                    }
+                    // 월 변경 및 표시
+                    HStack(spacing: 0) {
+                        Button(action: {
+                            withAnimation {
+                                homeViewModel.isWeeklyView = false
+                                homeViewModel.currentMonth = Calendar.current.date(byAdding: .month, value: -1, to: homeViewModel.currentMonth) ?? homeViewModel.currentMonth
+                                if isCurrentMonth(date: homeViewModel.currentMonth) {
+                                    homeViewModel.selectedDate = Date()
+                                } else {
+                                    homeViewModel.selectedDate = getLastDate(of: homeViewModel.currentMonth)
+                                }
+                            }
+                        }) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundStyle(.black)
+                                .padding(.horizontal)
+                        }
+                        Text(monthYearFormatter.string(from: homeViewModel.currentMonth))
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.blue)
+                        
+                        Button(action: {
+                            withAnimation {
+                                homeViewModel.isWeeklyView = false
+                                homeViewModel.currentMonth = Calendar.current.date(byAdding: .month, value: 1, to: homeViewModel.currentMonth) ?? homeViewModel.currentMonth
+                                if isCurrentMonth(date: homeViewModel.currentMonth) {
+                                    let now = Date()
+
+                                    var calendar = Calendar.current
+                                    calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+                                    let timeZoneOffset = TimeZone.current.secondsFromGMT()
+
+                                    var components = calendar.dateComponents([.year, .month, .day], from: now)
+                                    components.hour = 15 + (timeZoneOffset / 3600)
+                                    components.minute = 0
+                                    components.second = 0
+
+                                    if let newDate = calendar.date(from: components) {
+                                    } else {
+                                        print("Date creation failed")
+                                    }
+
+                                    if let newDate = Calendar.current.date(from: components) {
+                                        homeViewModel.selectedDate = newDate
+                                    } else {
+                                        print("Date creation failed")
+                                    }
+                                } else {
+                                    homeViewModel.selectedDate = getLastDate(of: homeViewModel.currentMonth)
+                                }
+                            }
+                        }) {
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundStyle(isFutureMonth(date: Calendar.current.date(byAdding: .month, value: 1, to: homeViewModel.currentMonth) ?? homeViewModel.currentMonth) ? Color.gray : .black)
+                                .padding(.horizontal)
+                        }
+                        .disabled(isFutureMonth(date: Calendar.current.date(byAdding: .month, value: 1, to: homeViewModel.currentMonth) ?? homeViewModel.currentMonth))
+                    }
+                    .padding(.horizontal)
+                }
+                // 커스텀 캘린더 뷰
+                Divider()
+                    .padding(.horizontal, 26)
+                    .padding(.vertical, 10)
+                // 요일 표시
+                HStack(spacing: 0) {
+                    ForEach(["일", "월", "화", "수", "목", "금", "토"], id: \.self) { day in
+                        Text(day)
+                            .font(.system(size: 12, weight: .medium))
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .padding(.bottom, 5)
+                .padding(.horizontal, 20)
+                CalendarView(isWeeklyView: $homeViewModel.isWeeklyView, currentMonth: $homeViewModel.currentMonth, selectedDate: $homeViewModel.selectedDate, transactions: homeViewModel.transactions)
+                    .gesture(
+                        DragGesture().onChanged { value in
+                            if value.translation.height < -50 {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    homeViewModel.isWeeklyView = true
+                                }
+                            } else if value.translation.height > 50 {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    homeViewModel.isWeeklyView = false
+                                }
+                            }
+                        }
+                    )
+                    .padding(.bottom, 4)
+                HStack {
+                    Spacer()
+                    VStack {
+                        HStack(spacing: 0) {
+                            Text(monthFormatter.string(from: homeViewModel.currentMonth) + "월 ").font(.system(size: 12, weight: .light))
+                            Text("지출").font(.system(size: 12, weight: .light)).foregroundColor(.red)
+                        }
+                        .padding(.bottom, 1)
+                        Text("\(homeViewModel.totalOutcome(for: homeViewModel.currentMonth))").font(.system(size: 16, weight: .medium)).foregroundColor(.gray)
+                    }
+                    Spacer()
+                    Divider()
+                        .frame(height: 60)
+                        .background(Color.gray)
+                    Spacer()
+                    VStack {
+                        HStack(spacing: 0) {
+                            Text(monthFormatter.string(from: homeViewModel.currentMonth) + "월 ").font(.system(size: 12, weight: .light))
+                            Text("수입").font(.system(size: 12, weight: .light)).foregroundColor(.green)
+                        }
+                        .padding(.bottom, 1)
+                        Text("\(homeViewModel.totalIncome(for: homeViewModel.currentMonth))").font(.system(size: 16, weight: .medium)).foregroundColor(.green)
+                    }
+                    Spacer()
+                }
+                .padding(.vertical, 10)
+                .background(Color(UIColor.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal, 26)
+                .padding(.bottom, 10)
+//                .offset(y: homeViewModel.isWeeklyView ? -40 : 0)
+                .frame(height: homeViewModel.isWeeklyView ? 0 : nil)
+                .opacity(homeViewModel.isWeeklyView ? 0 : 1)
+                .animation(.easeInOut(duration: 0.3), value: homeViewModel.isWeeklyView)
+                Spacer()
+                
+                TransactionListView(homeViewModel: homeViewModel, selectedTransaction: $selectedTransaction, isEditMode: $isEditMode)
+                    .padding(.horizontal, 26)
+            }
             VStack {
+                // 플로팅 버튼
                 Spacer()
                 HStack {
                     Spacer()
                     Button(action: {
-                        self.showingSheet.toggle()
+                        self.selectedTransaction = Transaction(
+                            place: "거래처",
+                            amount: 0,
+                            transactionType: .outcome,
+                            displayDate: homeViewModel.selectedDate,
+                            createDate: Date(),
+                            category: .none,
+                            memo: ""
+                        )
+                        self.isEditMode = false
                     }) {
                         Image(systemName: "plus")
                             .font(.system(size: 24))
@@ -34,300 +185,121 @@ struct HomeView: View {
                     .padding()
                 }
             }
-            VStack (spacing: 0) {
-                // 상단바 영역
-                ZStack {
-                    HStack {
-                        Spacer().frame(width: 10)
-                        Image(.icon)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 60, height: 35, alignment: .center) // 이미지의 위 아래 여백을 없애기 위해서 height는 35로 지정함 (원본 이미지에 여백 존재)
-                            .clipped()
-                        Spacer()
-                    }
-                    // 월 변경 및 표시
-                    HStack (spacing: 0) {
-                        Button(action: {
-                            withAnimation {
-                                isWeeklyView = false
-                                currentMonth = Calendar.current.date(byAdding: .month, value: -1, to: currentMonth) ?? currentMonth
-                                if isCurrentMonth(date: currentMonth) {
-                                    selectedDate = Date()
-                                } else {
-                                    selectedDate = getLastDate(of: currentMonth)
-                                }
-                            }
-                        }) {
-                            Image(systemName: "chevron.left")
-                                .font(.SemiBold16)
-                                .foregroundStyle(.black)
-                                .padding(.horizontal)
-                        }
-                        Text(monthYearFormatter.string(from: currentMonth))
-                            .font(.SemiBold18)
-                            .foregroundStyle(.blue)
-                        
-                        Button(action: {
-                            withAnimation {
-                                isWeeklyView = false
-                                currentMonth = Calendar.current.date(byAdding: .month, value: 1, to: currentMonth) ?? currentMonth
-                                if isCurrentMonth(date: currentMonth) {
-                                    selectedDate = Date()
-                                } else {
-                                    selectedDate = getLastDate(of: currentMonth)
-                                }
-                            }
-                            
-                        }) {
-                            Image(systemName: "chevron.right")
-                                .font(.SemiBold16)
-                                .foregroundStyle(isFutureMonth(date: Calendar.current.date(byAdding: .month, value: 1, to: currentMonth) ?? currentMonth) ? Color.darkGray : .black)
-                                .padding(.horizontal)
-                        }
-                        .disabled(isFutureMonth(date: Calendar.current.date(byAdding: .month, value: 1, to: currentMonth) ?? currentMonth))
-                    }
-                    .padding(.horizontal)
-                }
-                //커스텀 캘린더 뷰
-                Divider()
-                    .padding(.horizontal, 26)
-                    .padding(.vertical, 10)
-                // 요일 표시
-                HStack(spacing: 0) {
-                    ForEach(["일", "월", "화", "수", "목", "금", "토"], id: \.self) { day in
-                        Text(day)
-                            .font(.Medium12)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                .padding(.bottom, 5)
-                .padding(.horizontal, 20)
-                CalendarView(isWeeklyView: $isWeeklyView, currentMonth: $currentMonth, selectedDate: $selectedDate)
-                    .gesture(
-                        DragGesture().onChanged { value in
-                            if value.translation.height < -50 {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    isWeeklyView = true
-                                }
-                            } else if value.translation.height > 50 {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    isWeeklyView = false
-                                }
-                            }
-                        }
-                    )
-                    .padding(.bottom, 12)
-                HStack {
-                    Spacer()
-                    VStack {
-                        HStack (spacing: 0) {
-                            Text(monthFormatter.string(from: currentMonth) + "월 ").font(.Light12)
-                            Text("지출").font(.Light12).foregroundColor(.customRed)
-                        }
-                        .padding(.bottom, 1)
-                        Text("230,000").font(.Medium16).foregroundColor(.darkGray)
-                    }
-                    Spacer()
-                    Divider()
-                        .frame(height: 60)
-                        .background(Color.darkGray)
-                    Spacer()
-                    VStack {
-                        HStack (spacing: 0) {
-                            Text(monthFormatter.string(from: currentMonth) + "월 ").font(.Light12)
-                            Text("수입").font(.Light12).foregroundColor(.customGreen)
-                        }
-                        .padding(.bottom, 1)
-                        Text("230,000").font(.Medium16).foregroundColor(.customGreen)
-                    }
-                    Spacer()
-                }
-                .padding(.vertical, 10)
-                .background(Color.lightGray)
-                .cornerRadius(10)
-                .padding(.horizontal, 26)
-                Spacer()
-                
-            }
         }
-        .sheet(isPresented: $showingSheet) {
-            DetailSheet()
+        .sheet(item: $selectedTransaction) { transaction in
+            DetailSheet(homeViewModel: homeViewModel, transaction: transaction, isEdit: isEditMode)
+                .onDisappear {
+                    homeViewModel.fetchItem()
+                }
         }
     }
 }
+
+
+struct TransactionListView: View {
+    @ObservedObject var homeViewModel: HomeViewModel
+    @Binding var selectedTransaction: Transaction?
+    @Binding var isEditMode: Bool
+    
+    var body: some View {
+        ScrollViewReader { proxy in
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(groupedTransactions, id: \.key) { date, transactions in
+                        VStack(alignment: .leading, spacing: 0) {
+                            Divider()
+                            Section(header: Text(dateHeader(for: date))
+                                .font(.Medium12)
+                                .padding(.top, 6)
+                                .padding(.bottom, 10)) {
+                                    ForEach(transactions.sorted(by: { $0.createDate > $1.createDate }), id: \.id) { transaction in // 트랜잭션 정렬
+                                        TransactionRow(transaction: transaction) {
+                                            selectedTransaction = transaction
+                                            isEditMode = true
+                                        }
+                                        .id(transaction.displayDate)
+                                    }
+                                }
+                        }
+                    }
+                    Spacer().frame(height: 60)
+                }
+                .onChange(of: homeViewModel.selectedDate) { newValue in
+                    withAnimation {
+                        proxy.scrollTo(newValue, anchor: .top)
+                    }
+                }
+            }
+            .simultaneousGesture(
+                DragGesture().onChanged({
+                    let isScrollUp = 0 > $0.translation.height
+                    withAnimation {
+                        if(isScrollUp) {
+                            homeViewModel.isWeeklyView = true
+                        }
+                    }
+                }))
+        }
+    }
+    
+    private var groupedTransactions: [(key: Date, value: [Transaction])] {
+        Dictionary(grouping: homeViewModel.transactions) { transaction in
+            Calendar.current.startOfDay(for: transaction.displayDate)
+        }
+        .sorted { $0.key > $1.key }
+    }
+    
+    private func dateHeader(for date: Date) -> String {
+        if Calendar.current.isDateInToday(date) {
+            return "오늘"
+        } else {
+            return dateFormatter.string(from: date)
+        }
+    }
+}
+
+
+
+struct TransactionRow: View {
+    var transaction: Transaction
+    var onTap: () -> Void
+    
+    var body: some View {
+        HStack {
+            Image(categoryIcon(transaction.category))
+                .resizable()
+                .frame(width: 30, height: 30)
+                .padding(.trailing, 4)
+            Text(transaction.place)
+                .font(.Light16)
+            Spacer()
+            if (transaction.transactionType == .income) {
+                Text("+\(transaction.amount)엔")
+                    .font(.Medium20)
+            } else {
+                Text("-\(transaction.amount)엔")
+                    .font(.Medium20)
+            }
+        }
+        .padding(.vertical, 10)
+        .contentShape(Rectangle()) // 전체 영역을 터치 가능하게 설정
+        .onTapGesture {
+            onTap()
+        }
+    }
+}
+
+
+
+
+
+let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "d일 EEEE"
+    formatter.locale = Locale(identifier: "ko_KR")
+    return formatter
+}()
 
 #Preview {
     HomeView()
-}
-
-
-struct CalendarView: View {
-    @Binding var isWeeklyView: Bool
-    @Binding var currentMonth: Date
-    @Binding var selectedDate: Date
-    
-    @State var dayCellHeight: CGFloat = 60
-    
-    private var weeksInMonth: [[Date]] {
-        var weeks: [[Date]] = [[]]
-        var currentWeek = 0
-        
-        for date in daysWithPadding {
-            let weekday = Calendar.current.component(.weekday, from: date)
-            if weekday == 1 && !weeks[currentWeek].isEmpty {
-                currentWeek += 1
-                weeks.append([])
-            }
-            weeks[currentWeek].append(date)
-        }
-        return weeks
-    }
-    
-    private var daysWithPadding: [Date] {
-        var days: [Date] = []
-        let calendar = Calendar.current
-        let firstDayOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: currentMonth))!
-        let firstWeekday = calendar.component(.weekday, from: firstDayOfMonth) - 1
-        let daysInMonthRange = calendar.range(of: .day, in: .month, for: currentMonth)!
-        
-        // Previous month's padding
-        if let previousMonth = calendar.date(byAdding: .month, value: -1, to: currentMonth) {
-            let daysInPreviousMonth = calendar.range(of: .day, in: .month, for: previousMonth)!.count
-            let startDay = daysInPreviousMonth - firstWeekday + 1
-            if startDay > 0 && startDay <= daysInPreviousMonth {
-                for day in startDay...daysInPreviousMonth {
-                    var components = calendar.dateComponents([.year, .month], from: previousMonth)
-                    components.day = day
-                    if let date = calendar.date(from: components) {
-                        days.append(date)
-                    }
-                }
-            }
-        }
-        
-        // Current month's days
-        for day in daysInMonthRange {
-            var components = calendar.dateComponents([.year, .month], from: currentMonth)
-            components.day = day
-            if let date = calendar.date(from: components) {
-                days.append(date)
-            }
-        }
-        
-        // Next month's padding
-        let remainingDays = 7 - (days.count % 7)
-        if remainingDays < 7, let nextMonth = calendar.date(byAdding: .month, value: 1, to: currentMonth) {
-            for day in 1...remainingDays {
-                var components = calendar.dateComponents([.year, .month], from: nextMonth)
-                components.day = day
-                if let date = calendar.date(from: components) {
-                    days.append(date)
-                }
-            }
-        }
-        
-        return days
-    }
-
-    
-    var body: some View {
-        VStack {
-            ZStack {
-                ForEach(weeksInMonth.indices, id: \.self) { index in
-                    let week = weeksInMonth[index]
-                    WeekView(week: week, selectedDate: $selectedDate, isWeeklyView: $isWeeklyView, dayCellHeight: $dayCellHeight)
-                        .zIndex(week.contains(where: { Calendar.current.isDate($0, inSameDayAs: selectedDate) }) ? 1 : 0)
-                        .offset(y: isWeeklyView ? 0 : CGFloat(index) * dayCellHeight)
-                        .animation(.easeInOut(duration: 0.3), value: isWeeklyView)
-                }
-            }
-            Spacer()
-        }
-        .frame(height: isWeeklyView ? dayCellHeight : CGFloat(weeksInMonth.count) * dayCellHeight)
-        .padding(.top, 14)
-        .padding(.horizontal, 20)
-    }
-}
-
-struct WeekView: View {
-    var week: [Date] = []
-    @Binding var selectedDate: Date
-    @Binding var isWeeklyView: Bool
-    @Binding var dayCellHeight: CGFloat
-    
-    var body: some View {
-        HStack (spacing: 0) {
-            ForEach(week, id: \.self) { date in
-                VStack (spacing: 0) {
-                    if Calendar.current.isDate(date, equalTo: selectedDate, toGranularity: .month) {
-                        Text(dayFormatter.string(from: date))
-                            .font(.Medium16)
-                            .foregroundColor(isPastOrToday(date: date) ? (Calendar.current.isDate(date, inSameDayAs: selectedDate) ? .white : .black) : .darkGray)
-                            .frame(width: 30, height: 30) // 원의 크기 설정
-                            .background(
-                                Circle()
-                                    .fill(Calendar.current.isDate(date, inSameDayAs: selectedDate) ? .customBlue : Color.clear)
-                            )
-                        Text("+3000")
-                            .font(.Medium10)
-                            .foregroundColor(.customGreen)
-                        Text("-3000")
-                            .font(.Medium10)
-                            .foregroundColor(.darkGray)
-                    } else {
-                        Text("")
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: dayCellHeight)
-                .onTapGesture {
-                    if isPastOrToday(date: date) {
-                        selectedDate = date
-                    }
-                }
-            }
-        }
-        .frame(height: dayCellHeight)
-        .background(Color(.white))
-    }
-}
-
-// Helper functions
-private func isPastOrToday(date: Date) -> Bool {
-    return Calendar.current.compare(date, to: Date(), toGranularity: .day) != .orderedDescending
-}
-
-private func isFutureMonth(date: Date) -> Bool {
-    return Calendar.current.compare(date, to: Date(), toGranularity: .month) == .orderedDescending
-}
-
-private func isCurrentMonth(date: Date) -> Bool {
-    return Calendar.current.compare(date, to: Date(), toGranularity: .month) == .orderedSame
-}
-
-// Date formatters
-private let monthYearFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy년 M월"
-    return formatter
-}()
-
-private let monthFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "M"
-    return formatter
-}()
-
-private let dayFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "d"
-    return formatter
-}()
-
-private func getLastDate(of date: Date) -> Date {
-    var components = Calendar.current.dateComponents([.year, .month], from: date)
-    components.day = Calendar.current.range(of: .day, in: .month, for: date)?.count
-    return Calendar.current.date(from: components) ?? date
 }

@@ -8,33 +8,38 @@
 import SwiftUI
 
 struct DetailSheet: View {
-    @State private var transaction = Transaction(
-        place: "세븐일레븐",
-        amount: 3000,
-        transactionType: .outcome,
-        displayDate: Date(),
-        createDate: Date(),
-        category: .food,
-        memo: ""
-    )
+    @Environment(\.dismiss) var dismiss
+    @ObservedObject var homeViewModel: HomeViewModel
     
+    @State var transaction: Transaction
     @State private var selectTypes = ["지출", "수입"]
-    @State private var selectedType = 0 {
-        didSet {
-            transaction.transactionType = selectedType == 0 ? .outcome : .income
-        }
-    }
-    
+    @State private var selectedType: Int
     @State private var showDatePicker = false
     @State private var showCategoryPicker = false
-    
     @State private var datePickerOffset: CGFloat = 0.0
-    
     @State private var amountString: String = ""
+    @FocusState private var isPlaceFieldFocused: Bool
+    @State private var isEditingPlace = false
+    @FocusState private var isPriceFieldFocused: Bool
+    @State private var showAlert = false // State for showing alert
+    var isEdit: Bool
+
+    init(homeViewModel: HomeViewModel, transaction: Transaction, isEdit: Bool) {
+        self.homeViewModel = homeViewModel
+        self._transaction = State(initialValue: transaction)
+        self._selectedType = State(initialValue: transaction.transactionType == .outcome ? 0 : 1)
+        self.isEdit = isEdit
+    }
 
     var body: some View {
         ZStack {
             Color.lightGray.ignoresSafeArea()
+                .onTapGesture{
+                    isPlaceFieldFocused = false
+                    isEditingPlace = false
+                    showDatePicker = false
+                    isPriceFieldFocused = false
+                }
             VStack {
                 Capsule()
                     .fill(Color.secondary)
@@ -45,28 +50,69 @@ struct DetailSheet: View {
                     Image(categoryIcon(transaction.category))
                         .resizable()
                         .frame(width: 28, height: 28)
-                    Text(transaction.place).font(.Light16)
-                    Button(action: {
-                        
-                    }, label: {
+                    HStack (spacing: 0) {
+                        if (isEditingPlace) {
+                            TextField("위치", text: $transaction.place)
+                                .font(.Light16)
+                                .fixedSize()
+                                .focused($isPlaceFieldFocused)
+                                .disabled(!isEditingPlace)
+                                .onSubmit {
+                                    isEditingPlace = false
+                                    isPlaceFieldFocused = false
+                                }
+                                .onAppear {
+                                    DispatchQueue.main.async {
+                                        isPlaceFieldFocused = true
+                                    }
+                                }
+                        } else {
+                            TextField("위치", text: $transaction.place)
+                                .font(.Light16)
+                                .fixedSize()
+                                .disabled(true)
+                        }
                         Image(systemName: "pencil.line").foregroundColor(.black)
-                    })
+                            .padding(.leading, 4)
+                    }
+                    .onTapGesture {
+                        isEditingPlace = true
+                        isPlaceFieldFocused = true
+                    }
                     Spacer()
+                    if isEdit {
+                        Button(action: {
+                            homeViewModel.removeItem(transaction)
+                            dismiss()
+                        }, label: {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                        })
+                    }
                 }
                 .padding(.top, 20)
                 HStack {
-                    TextField("0", text: $amountString)
-                        .font(.SemiBold28)
-                        .keyboardType(.numberPad)
-                        .fixedSize()
-                        .onChange(of: amountString) {
-                            transaction.amount = Int(amountString.replacingOccurrences(of: ",", with: "")) ?? 0
-                            amountString = addCommasToNumber(String(transaction.amount))
-                        }
-                        .onAppear {
-                            amountString = addCommasToNumber(String(transaction.amount))
-                        }
-                    Text("엔").font(.SemiBold28)
+                    HStack {
+                        TextField("", text: $amountString, prompt: Text("0"))
+                            .font(.SemiBold28)
+                            .keyboardType(.numberPad)
+                            .focused($isPriceFieldFocused)
+                            .fixedSize()
+                            .onChange(of: amountString) { _ in
+                                transaction.amount = Int(amountString.replacingOccurrences(of: ",", with: "")) ?? 0
+                                amountString = addCommasToNumber(String(transaction.amount))
+                            }
+                            .onAppear {
+                                amountString = addCommasToNumber(String(transaction.amount))
+                                if amountString == "" {
+                                    amountString = ""
+                                }
+                            }
+                        Text("엔").font(.SemiBold28)
+                    }
+                    .onTapGesture {
+                        isPriceFieldFocused = true
+                    }
                     Spacer()
                     Picker(selection: self.$selectedType, label: Text("Pick One")) {
                         ForEach(Array(self.selectTypes.enumerated()), id: \.element) { index, element in
@@ -76,6 +122,9 @@ struct DetailSheet: View {
                                 .tag(index)
                         }
                     }
+                    .onChange(of: selectedType) { newValue in
+                        transaction.transactionType = newValue == 0 ? .outcome : .income
+                    }
                     .frame(width: 118)
                     .pickerStyle(SegmentedPickerStyle())
                 }
@@ -84,20 +133,13 @@ struct DetailSheet: View {
                     Text("일시").font(.SemiBold20).foregroundColor(.darkGray)
                     Spacer()
                     Button(action: {
-                        withAnimation {
+                        withAnimation (.easeInOut(duration: 0.1))  {
                             self.showDatePicker.toggle()
                         }
                     }, label: {
                         HStack {
                             Text("\(transaction.displayDate, formatter: dateFormatter)").font(.Light16).foregroundColor(.black)
                             Image(systemName: "chevron.down").foregroundColor(.customBlue)
-                        }
-                    })
-                    .background(GeometryReader { geometry in
-                        Color.clear.onAppear {
-                            DispatchQueue.main.async {
-                                datePickerOffset = geometry.frame(in: .global).minY
-                            }
                         }
                     })
                 }
@@ -111,6 +153,8 @@ struct DetailSheet: View {
                         }
                     } label: {
                         Image(categoryIcon(transaction.category))
+                            .resizable()
+                            .frame(width: 28, height: 28)
                         Image(systemName: "chevron.down").foregroundColor(.customBlue)
                     }
                 }
@@ -136,7 +180,17 @@ struct DetailSheet: View {
                     .foregroundColor(.darkGray)
                 Spacer()
                 Button(action: {
-                    printTransaction()
+                    if transaction.amount == 0 {
+                        showAlert = true
+                    } else {
+                        printTransaction()
+                        if isEdit {
+                            homeViewModel.updateTransaction(transaction)
+                        } else {
+                            homeViewModel.appendItem(transaction: transaction)
+                        }
+                        dismiss()
+                    }
                 }) {
                     Text("완료")
                         .font(.SemiBold16)
@@ -147,6 +201,12 @@ struct DetailSheet: View {
                         .cornerRadius(10)
                 }
                 .padding(.bottom, 20)
+                .alert(isPresented: $showAlert) {
+                    Alert(
+                        title: Text("금액을 입력하세요!"),
+                        dismissButton: .default(Text("확인"))
+                    )
+                }
             }
             .padding(.horizontal, 26)
             .sheet(isPresented: $showCategoryPicker) {
@@ -154,6 +214,7 @@ struct DetailSheet: View {
             }
             .overlay(
                 VStack {
+                    Spacer()
                     if showDatePicker {
                         DatePicker("", selection: $transaction.displayDate, in: ...Date(), displayedComponents: .date)
                             .datePickerStyle(GraphicalDatePickerStyle())
@@ -161,9 +222,8 @@ struct DetailSheet: View {
                             .cornerRadius(10)
                             .shadow(radius: 5)
                             .padding()
-                            .offset(y: datePickerOffset)
                             .onChange(of: transaction.displayDate) {
-                                withAnimation {
+                                withAnimation (.easeInOut(duration: 0.1)) {
                                     showDatePicker = false
                                 }
                             }
@@ -171,6 +231,12 @@ struct DetailSheet: View {
                     Spacer()
                 }
             )
+        }
+        .ignoresSafeArea(.keyboard)
+        .onChange(of: isPlaceFieldFocused) { newValue in
+            if (!newValue) {
+                isEditingPlace = false
+            }
         }
     }
     
@@ -185,16 +251,12 @@ struct DetailSheet: View {
     }
 }
 
-#Preview {
-    DetailSheet()
-}
-
 struct CategoryPicker: View {
     @Binding var selectedCategory: CategoryType
     @Environment(\.presentationMode) var presentationMode
     
     let categories: [CategoryType] = [
-        .food, .education, .drink, .cafe, .store, .shopping, .hospital, .travel
+        .none, .food, .education, .drink, .cafe, .store, .shopping, .hospital, .travel
     ]
     
     func categoryName(_ category: CategoryType) -> String {
@@ -224,6 +286,7 @@ struct CategoryPicker: View {
         VStack(spacing: 0) {
             ForEach(categories, id: \.self) { category in
                 HStack {
+                    Spacer()
                     Image(categoryIcon(category))
                         .resizable()
                         .frame(width: 30, height: 30)
@@ -234,6 +297,7 @@ struct CategoryPicker: View {
                         Spacer()
                     }
                     .frame(maxWidth: 80)
+                    Spacer()
                 }
                 .padding()
                 .background(Color.white)
@@ -242,22 +306,12 @@ struct CategoryPicker: View {
                     selectedCategory = category
                     presentationMode.wrappedValue.dismiss()
                 }
-                Divider() // 각 항목 사이에 구분선을 추가
+                
+                Divider()
             }
         }
         .cornerRadius(10)
-        .presentationDetents([.height(500)])
-    }
-}
-
-#Preview {
-    CategoryPicker(selectedCategory: .constant(.cafe))
-}
-
-// Custom presentationDetents for a specific height
-extension PresentationDetent {
-    static func setHeight(_ height: CGFloat) -> Self {
-        Self.height(height)
+        .presentationDetents([.height(560)])
     }
 }
 

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A2083442C219B0400A3F224 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2083432C219B0400A3F224 /* HomeViewModel.swift */; };
+		2A2083472C219BD400A3F224 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2083462C219BD400A3F224 /* CalendarView.swift */; };
+		2A20834A2C21EFD800A3F224 /* TransactionDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2083492C21EFD800A3F224 /* TransactionDataManager.swift */; };
+		2A20834D2C22A3A600A3F224 /* SpeechRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A20834C2C22A3A600A3F224 /* SpeechRecognitionManager.swift */; };
 		2A9DB8E12C2002F200B37BD9 /* ViewStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DB8E02C2002F200B37BD9 /* ViewStateManager.swift */; };
 		2A9DB8E32C20035800B37BD9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DB8E22C20035800B37BD9 /* ContentView.swift */; };
 		2A9DB8E62C2003D200B37BD9 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DB8E52C2003D200B37BD9 /* SplashView.swift */; };
@@ -31,6 +35,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A2083432C219B0400A3F224 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		2A2083462C219BD400A3F224 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		2A2083492C21EFD800A3F224 /* TransactionDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataManager.swift; sourceTree = "<group>"; };
+		2A20834C2C22A3A600A3F224 /* SpeechRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionManager.swift; sourceTree = "<group>"; };
 		2A9DB8E02C2002F200B37BD9 /* ViewStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStateManager.swift; sourceTree = "<group>"; };
 		2A9DB8E22C20035800B37BD9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2A9DB8E52C2003D200B37BD9 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
@@ -68,10 +76,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A2083422C219AE300A3F224 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2A2083432C219B0400A3F224 /* HomeViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2A2083452C219BC900A3F224 /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				2A2083462C219BD400A3F224 /* CalendarView.swift */,
+			);
+			path = SubViews;
+			sourceTree = "<group>";
+		};
 		2A9DB8DF2C2002DA00B37BD9 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				2A9DB8E02C2002F200B37BD9 /* ViewStateManager.swift */,
+				2A2083492C21EFD800A3F224 /* TransactionDataManager.swift */,
+				2A20834C2C22A3A600A3F224 /* SpeechRecognitionManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -79,6 +105,7 @@
 		2A9DB8E42C2003BD00B37BD9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2A2083452C219BC900A3F224 /* SubViews */,
 				2A9DB8E52C2003D200B37BD9 /* SplashView.swift */,
 				2A9DB91E2C20107500B37BD9 /* OnboardingView.swift */,
 				2A9DB9222C201E8600B37BD9 /* HomeView.swift */,
@@ -152,6 +179,7 @@
 				2A9DB9272C2063D700B37BD9 /* Models */,
 				2A9DB9082C200B1200B37BD9 /* Utils */,
 				2A9DB8DF2C2002DA00B37BD9 /* Managers */,
+				2A2083422C219AE300A3F224 /* ViewModels */,
 				2A9DB8E42C2003BD00B37BD9 /* Views */,
 				2A9DB8E22C20035800B37BD9 /* ContentView.swift */,
 				2AAD3AB32C1CCA9500D07AFF /* NC2App.swift */,
@@ -244,6 +272,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A9DB9232C201E8600B37BD9 /* HomeView.swift in Sources */,
+				2A20834D2C22A3A600A3F224 /* SpeechRecognitionManager.swift in Sources */,
+				2A2083442C219B0400A3F224 /* HomeViewModel.swift in Sources */,
+				2A2083472C219BD400A3F224 /* CalendarView.swift in Sources */,
 				2A9DB8E12C2002F200B37BD9 /* ViewStateManager.swift in Sources */,
 				2A9DB90B2C200B3600B37BD9 /* Color+Extension.swift in Sources */,
 				2A9DB9072C20084900B37BD9 /* Font.swift in Sources */,
@@ -251,6 +282,7 @@
 				2A9DB8E62C2003D200B37BD9 /* SplashView.swift in Sources */,
 				2A9DB8E32C20035800B37BD9 /* ContentView.swift in Sources */,
 				2A9DB91F2C20107500B37BD9 /* OnboardingView.swift in Sources */,
+				2A20834A2C21EFD800A3F224 /* TransactionDataManager.swift in Sources */,
 				2AAD3AB42C1CCA9500D07AFF /* NC2App.swift in Sources */,
 				2A9DB9252C2062AE00B37BD9 /* DetailSheet.swift in Sources */,
 			);
@@ -387,6 +419,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NC2/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -426,6 +460,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NC2/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
