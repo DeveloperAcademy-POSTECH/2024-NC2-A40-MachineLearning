@@ -28,8 +28,8 @@ struct SplashView: View {
                         Text("간편하게 기록").font(.SemiBold18).foregroundStyle(Color.blue)
                         Text("하는 가계부").font(.Medium18)
                     }
-                    Image(systemName: "waveform").font(.system(size: 18)).foregroundStyle(Color.blue).offset(y: -70)
-                    Image(systemName: "bolt.fill").font(.system(size: 18)).foregroundStyle(Color.blue).offset(y: -35)
+                    Image(systemName: "waveform").font(.system(size: 18)).foregroundColor(.customBlue).offset(y: -70)
+                    Image(systemName: "bolt.fill").font(.system(size: 18)).foregroundColor(.customBlue).offset(y: -35)
                 }
             }
         }

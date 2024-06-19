@@ -46,10 +46,16 @@ enum CategoryType: String, CaseIterable, Codable {
     case shopping
     case hospital
     case travel
+    case allowance
+    case salary
+    case interest
+    case insurance
 }
 
 func categoryIcon(_ category: CategoryType) -> String {
     switch category {
+    case .none:
+        return "none"
     case .food:
         return "food"
     case .education:
@@ -66,7 +72,14 @@ func categoryIcon(_ category: CategoryType) -> String {
         return "hospital"
     case .travel:
         return "travel"
-    case .none:
-        return "none"
+    case .allowance:
+        return "allowance"
+    case .salary:
+        return "salary"
+    case .interest:
+        return "interest"
+    case .insurance:
+        return "insurance"
+        
     }
 }

@@ -17,6 +17,7 @@ extension Font {
     
     // SemiBold
     static let SemiBold28: Font = .custom("PretendardJP-SemiBold", size: 28)
+    static let SemiBold26: Font = .custom("PretendardJP-SemiBold", size: 26)
     static let SemiBold20: Font = .custom("PretendardJP-SemiBold", size: 20)
     static let SemiBold18: Font = .custom("PretendardJP-SemiBold", size: 18)
     static let SemiBold16: Font = .custom("PretendardJP-SemiBold", size: 16)

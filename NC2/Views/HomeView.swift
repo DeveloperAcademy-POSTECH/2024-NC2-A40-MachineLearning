@@ -164,7 +164,7 @@ struct HomeView: View {
                     Spacer()
                     Button(action: {
                         self.selectedTransaction = Transaction(
-                            place: "거래처",
+                            place: "",
                             amount: 0,
                             transactionType: .outcome,
                             displayDate: homeViewModel.selectedDate,
@@ -276,6 +276,7 @@ struct TransactionRow: View {
             if (transaction.transactionType == .income) {
                 Text("+\(transaction.amount)엔")
                     .font(.Medium20)
+                    .foregroundColor(.customGreen)
             } else {
                 Text("-\(transaction.amount)엔")
                     .font(.Medium20)

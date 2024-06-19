@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import NaturalLanguage
+import CoreML
 
 struct DetailSheet: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var homeViewModel: HomeViewModel
+    
+    @StateObject private var speechRecognitionManager = SpeechRecognitionManager()
+    @State private var isRecording = false
     
     @State var transaction: Transaction
     @State private var selectTypes = ["지출", "수입"]
@@ -21,9 +26,14 @@ struct DetailSheet: View {
     @FocusState private var isPlaceFieldFocused: Bool
     @State private var isEditingPlace = false
     @FocusState private var isPriceFieldFocused: Bool
-    @State private var showAlert = false // State for showing alert
+    @State private var showAmountAlert = false
+    @State private var showPlaceAlert = false
     var isEdit: Bool
-
+    
+    @State private var placeGrayOpacity: Double = 0.0
+    @State private var amountGrayOpacity: Double = 0.0
+    @State private var dateGrayOpacity: Double = 0.0
+    
     init(homeViewModel: HomeViewModel, transaction: Transaction, isEdit: Bool) {
         self.homeViewModel = homeViewModel
         self._transaction = State(initialValue: transaction)
@@ -41,11 +51,6 @@ struct DetailSheet: View {
                     isPriceFieldFocused = false
                 }
             VStack {
-                Capsule()
-                    .fill(Color.secondary)
-                    .opacity(0.5)
-                    .frame(width: 35, height: 5)
-                    .padding(6)
                 HStack {
                     Image(categoryIcon(transaction.category))
                         .resizable()
@@ -75,6 +80,9 @@ struct DetailSheet: View {
                         Image(systemName: "pencil.line").foregroundColor(.black)
                             .padding(.leading, 4)
                     }
+                    .padding(4)
+                    .background(Color.darkGray.opacity(placeGrayOpacity))
+                    .cornerRadius(10)
                     .onTapGesture {
                         isEditingPlace = true
                         isPlaceFieldFocused = true
@@ -90,7 +98,7 @@ struct DetailSheet: View {
                         })
                     }
                 }
-                .padding(.top, 20)
+                .padding(.top, 40)
                 HStack {
                     HStack {
                         TextField("", text: $amountString, prompt: Text("0"))
@@ -110,6 +118,9 @@ struct DetailSheet: View {
                             }
                         Text("엔").font(.SemiBold28)
                     }
+                    .padding(4)
+                    .background(Color.darkGray.opacity(amountGrayOpacity))
+                    .cornerRadius(10)
                     .onTapGesture {
                         isPriceFieldFocused = true
                     }
@@ -123,6 +134,7 @@ struct DetailSheet: View {
                         }
                     }
                     .onChange(of: selectedType) { newValue in
+                        transaction.category = .none
                         transaction.transactionType = newValue == 0 ? .outcome : .income
                     }
                     .frame(width: 118)
@@ -142,6 +154,9 @@ struct DetailSheet: View {
                             Image(systemName: "chevron.down").foregroundColor(.customBlue)
                         }
                     })
+                    .padding(4)
+                    .background(Color.darkGray.opacity(dateGrayOpacity))
+                    .cornerRadius(10)
                 }
                 Spacer()
                 HStack {
@@ -165,23 +180,70 @@ struct DetailSheet: View {
                 }
                 TextField("", text: $transaction.memo)
                     .frame(height: 80)
+                    .padding()
                     .background(Color(hexColor: "D9D9D9"))
                     .cornerRadius(10)
                 Spacer()
-                Text("버튼을 눌러서 음성으로 내역을 기록해보세요.")
-                    .font(.Medium12)
-                    .foregroundColor(.darkGray)
-                Text("(날짜, 장소, 금액)")
-                    .font(.Medium12)
-                    .foregroundColor(.darkGray)
-                    .padding(.bottom, 10)
-                Text("예시) 패밀리마트에서 300엔")
-                    .font(.Light18)
-                    .foregroundColor(.darkGray)
-                Spacer()
+                VStack (spacing: 0) {
+                    if !isRecording {
+                        Text("버튼을 눌러서 음성으로 내역을 기록해보세요.")
+                            .font(.Medium12)
+                            .foregroundColor(.darkGray)
+                        Text("(날짜, 장소, 금액)")
+                            .font(.Medium12)
+                            .foregroundColor(.darkGray)
+                            .padding(.bottom, 10)
+                    } else {
+                        Text("듣고 있어요...")
+                            .font(.SemiBold26)
+                            .foregroundColor(.customBlue)
+                            .padding(.bottom, 10)
+                    }
+                }
+                .frame(height: 40)
+                if (speechRecognitionManager.recognizedText.isEmpty) {
+                    Text("예시) フェミマで300円")
+                        .font(.Light18)
+                        .foregroundColor(.darkGray)
+                        .padding(.vertical, 8)
+                } else {
+                    Text(speechRecognitionManager.recognizedText)
+                        .font(.Light18)
+                        .padding(.vertical, 8)
+                }
+                HStack {
+                    Button(action: {
+                        if isRecording {
+                            speechRecognitionManager.stopRecording()
+                        } else {
+                            speechRecognitionManager.startRecording()
+                            speechRecognitionManager.recognizedText = ""
+                        }
+                        isRecording.toggle()
+                    }) {
+                        ZStack {
+                            if isRecording {
+                                Circle()
+                                    .frame(width: 100, height: 100)
+                                    .foregroundColor(.customBlue.opacity(0.3))
+                                Circle()
+                                    .stroke(Color.customBlue, lineWidth: 1)
+                                    .frame(width: 114, height: 114)
+                            }
+                            Image("voice-bubble")
+                            Image(systemName: "waveform")
+                                .foregroundColor(.customBlue)
+                        }
+                        .padding()
+                        .frame(width: 115, height: 115)
+                    }
+                }
+                .padding(.bottom, 20)
                 Button(action: {
-                    if transaction.amount == 0 {
-                        showAlert = true
+                    if transaction.place == "" {
+                        showPlaceAlert = true
+                    } else if transaction.amount == 0 {
+                        showAmountAlert = true
                     } else {
                         printTransaction()
                         if isEdit {
@@ -201,16 +263,22 @@ struct DetailSheet: View {
                         .cornerRadius(10)
                 }
                 .padding(.bottom, 20)
-                .alert(isPresented: $showAlert) {
+                .alert(isPresented: $showAmountAlert) {
                     Alert(
                         title: Text("금액을 입력하세요!"),
+                        dismissButton: .default(Text("확인"))
+                    )
+                }
+                .alert(isPresented: $showPlaceAlert) {
+                    Alert(
+                        title: Text("장소를 입력하세요!"),
                         dismissButton: .default(Text("확인"))
                     )
                 }
             }
             .padding(.horizontal, 26)
             .sheet(isPresented: $showCategoryPicker) {
-                CategoryPicker(selectedCategory: $transaction.category)
+                CategoryPicker(selectedCategory: $transaction.category, selectedType: $selectedType)
             }
             .overlay(
                 VStack {
@@ -233,9 +301,47 @@ struct DetailSheet: View {
             )
         }
         .ignoresSafeArea(.keyboard)
+        .presentationDragIndicator(.visible)
         .onChange(of: isPlaceFieldFocused) { newValue in
             if (!newValue) {
                 isEditingPlace = false
+            }
+        }
+        .onChange(of: speechRecognitionManager.recognizedText) {
+            var taggedTextDic = textToTags(speechRecognitionManager.recognizedText)
+            taggedTextDic.forEach { (key: String, value: [String]) in
+                if key == "Location" {
+                    if value[0] != transaction.place {
+                        placeGrayOpacity = 1
+                        withAnimation {
+                            placeGrayOpacity = 0
+                        }
+                        transaction.place = value[0]
+                    }
+                } else if key == "Amount" {
+                    var recognizedNumber = extractNumbers(from: value[0])
+                    if recognizedNumber != transaction.amount {
+                        amountGrayOpacity = 1
+                        withAnimation {
+                            amountGrayOpacity = 0
+                        }
+                        transaction.amount = recognizedNumber
+                        amountString = String(recognizedNumber)
+                    }
+                } else if key == "Date" {
+                    if let updatedDate = updateDate(from: value[0]) {
+                        dateGrayOpacity = 1
+                        withAnimation {
+                            dateGrayOpacity = 0
+                        }
+                        transaction.displayDate = updatedDate
+                        print("Updated date: \(updatedDate)")
+                    }
+                } else if key == "Verb" {
+                    print(value)
+                } else if key == "0" {
+                    print("0")
+                }
             }
         }
     }
@@ -253,14 +359,21 @@ struct DetailSheet: View {
 
 struct CategoryPicker: View {
     @Binding var selectedCategory: CategoryType
+    @Binding var selectedType: Int
     @Environment(\.presentationMode) var presentationMode
     
-    let categories: [CategoryType] = [
+    let outcomeCategories: [CategoryType] = [
         .none, .food, .education, .drink, .cafe, .store, .shopping, .hospital, .travel
+    ]
+    
+    let incomeCategories: [CategoryType] = [
+        .none, .allowance, .education, .education, .interest, .insurance
     ]
     
     func categoryName(_ category: CategoryType) -> String {
         switch category {
+        case .none:
+            return "미등록"
         case .food:
             return "식당"
         case .education:
@@ -277,14 +390,20 @@ struct CategoryPicker: View {
             return "병원"
         case .travel:
             return "여행"
-        case .none:
-            return "미등록"
+        case .allowance:
+            return "용돈"
+        case .salary:
+            return "월급"
+        case .interest:
+            return "이자"
+        case .insurance:
+            return "보험"
         }
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            ForEach(categories, id: \.self) { category in
+            ForEach(selectedType == 0 ? outcomeCategories : incomeCategories, id: \.self) { category in
                 HStack {
                     Spacer()
                     Image(categoryIcon(category))
@@ -310,8 +429,9 @@ struct CategoryPicker: View {
                 Divider()
             }
         }
+        .ignoresSafeArea(.keyboard)
         .cornerRadius(10)
-        .presentationDetents([.height(560)])
+        .presentationDetents([.height(selectedType == 0 ? 560 : 380)])
     }
 }
 
@@ -323,4 +443,74 @@ func addCommasToNumber(_ input: String) -> String {
         return numberFormatter.string(from: NSNumber(value: number)) ?? input
     }
     return input
+}
+
+func textToTags(_ text: String) -> [String: [String]] {
+    do {
+        let mlModel = try MoneySpeechModel(configuration: MLModelConfiguration()).model
+
+        let customModel = try NLModel(mlModel: mlModel)
+        let customTagScheme = NLTagScheme("MoneySpeechModel")
+        
+        let tagger = NLTagger(tagSchemes: [.nameType, customTagScheme])
+        tagger.string = text
+        tagger.setModels([customModel], forTagScheme: customTagScheme)
+        
+        var tagsDict: [String: [String]] = [:]
+        
+        tagger.enumerateTags(in: text.startIndex..<text.endIndex, unit: .word, scheme: customTagScheme, options: .omitWhitespace) { tag, tokenRange in
+            if let tag = tag {
+                let tagValue = tag.rawValue
+                let token = String(text[tokenRange])
+                
+                if tagsDict[tagValue] != nil {
+                    tagsDict[tagValue]?.append(token)
+                } else {
+                    tagsDict[tagValue] = [token]
+                }
+            }
+            return true
+        }
+        
+        for (key, tokens) in tagsDict {
+            tagsDict[key] = [tokens.joined()]
+        }
+        
+        print(tagsDict)
+        return(tagsDict)
+    } catch {
+        print(error)
+        return [:]
+    }
+}
+
+func extractNumbers(from text: String) -> Int {
+    let numbers = text.filter { "0123456789".contains($0) }
+    return Int(numbers) ?? 0
+}
+
+func updateDate(from value: String) -> Date? {
+    let currentYear = Calendar.current.component(.year, from: Date())
+    let currentMonth = Calendar.current.component(.month, from: Date())
+    let currentDate = Date()
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "ja_JP")
+    
+    if let fullDate = getDate(from: value, using: "yyyy年M月d日"), fullDate <= currentDate {
+        return fullDate
+    } else if let monthDay = getDate(from: "\(currentYear)年\(value)", using: "yyyy年M月d日"), monthDay <= currentDate {
+        return monthDay
+    } else if let dayOnly = getDate(from: "\(currentYear)年\(currentMonth)月\(value)", using: "yyyy年M月d日"), dayOnly <= currentDate {
+        return dayOnly
+    }
+    
+    return nil
+}
+
+
+func getDate(from value: String, using format: String) -> Date? {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = format
+    return dateFormatter.date(from: value)
 }
