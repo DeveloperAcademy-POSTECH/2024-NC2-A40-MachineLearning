@@ -186,6 +186,7 @@ struct HomeView: View {
                 }
             }
         }
+        .dontAdaptsToKeyboard()
         .sheet(item: $selectedTransaction) { transaction in
             DetailSheet(homeViewModel: homeViewModel, transaction: transaction, isEdit: isEditMode)
                 .onDisappear {

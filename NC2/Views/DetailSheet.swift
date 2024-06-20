@@ -26,6 +26,7 @@ struct DetailSheet: View {
     @FocusState private var isPlaceFieldFocused: Bool
     @State private var isEditingPlace = false
     @FocusState private var isPriceFieldFocused: Bool
+    @FocusState private var isMemoFieldFocused: Bool
     @State private var showAmountAlert = false
     @State private var showPlaceAlert = false
     var isEdit: Bool
@@ -49,6 +50,7 @@ struct DetailSheet: View {
                     isEditingPlace = false
                     showDatePicker = false
                     isPriceFieldFocused = false
+                    isMemoFieldFocused = false
                 }
             VStack {
                 HStack {
@@ -75,7 +77,10 @@ struct DetailSheet: View {
                             TextField("위치", text: $transaction.place)
                                 .font(.Light16)
                                 .fixedSize()
-                                .disabled(true)
+                                .onTapGesture {
+                                    isEditingPlace = true
+                                    isPlaceFieldFocused = true
+                                }
                         }
                         Image(systemName: "pencil.line").foregroundColor(.black)
                             .padding(.leading, 4)
@@ -179,10 +184,14 @@ struct DetailSheet: View {
                     Spacer()
                 }
                 TextField("", text: $transaction.memo)
-                    .frame(height: 80)
+                    .frame(height: 40)
                     .padding()
+                    .focused($isMemoFieldFocused)
                     .background(Color(hexColor: "D9D9D9"))
                     .cornerRadius(10)
+                    .onTapGesture {
+                        isMemoFieldFocused = true
+                    }
                 Spacer()
                 VStack (spacing: 0) {
                     if !isRecording {
@@ -301,6 +310,8 @@ struct DetailSheet: View {
             )
         }
         .ignoresSafeArea(.keyboard)
+        .dontAdaptsToKeyboard()
+        .ignoresSafeArea()
         .presentationDragIndicator(.visible)
         .onChange(of: isPlaceFieldFocused) { newValue in
             if (!newValue) {
@@ -335,13 +346,17 @@ struct DetailSheet: View {
                             dateGrayOpacity = 0
                         }
                         transaction.displayDate = updatedDate
-                        print("Updated date: \(updatedDate)")
+//                        print("Updated date: \(updatedDate)")
                     }
                 } else if key == "Verb" {
                     print(value)
                 } else if key == "0" {
                     print("0")
                 }
+            }
+            // 잘못된 숫자가 인식되어 Date가 미리 지정된 경우, 현재로 되돌리는 코드 (Date가 없을 경우에만)
+            if !taggedTextDic.keys.contains("Date") {
+                transaction.displayDate = Date()
             }
         }
     }
