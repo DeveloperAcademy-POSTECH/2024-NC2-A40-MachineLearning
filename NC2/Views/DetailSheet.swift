@@ -335,7 +335,7 @@ struct DetailSheet: View {
                         transaction.place = value[0]
                     }
                 } else if key == "Amount" {
-                    var recognizedNumber = extractNumbers(from: value[0])
+                    let recognizedNumber = extractNumbers(from: value[0])
                     if recognizedNumber != transaction.amount {
                         amountGrayOpacity = 1
                         withAnimation {
@@ -351,7 +351,6 @@ struct DetailSheet: View {
                             dateGrayOpacity = 0
                         }
                         transaction.displayDate = updatedDate
-//                        print("Updated date: \(updatedDate)")
                     }
                 } else if key == "Verb" {
                     print(value)
