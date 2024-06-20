@@ -182,7 +182,7 @@ func isCurrentMonth(date: Date) -> Bool {
 // Date formatters
 let monthYearFormatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy년 M월"
+    formatter.dateFormat = NSLocalizedString("yyyy년 M월", comment: "")
     return formatter
 }()
 

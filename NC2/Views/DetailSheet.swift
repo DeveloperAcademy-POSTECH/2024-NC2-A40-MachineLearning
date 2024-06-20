@@ -10,6 +10,8 @@ import NaturalLanguage
 import CoreML
 
 struct DetailSheet: View {
+    let appLanguage = Bundle.main.preferredLocalizations.first
+    
     @Environment(\.dismiss) var dismiss
     @ObservedObject var homeViewModel: HomeViewModel
     
@@ -17,7 +19,8 @@ struct DetailSheet: View {
     @State private var isRecording = false
     
     @State var transaction: Transaction
-    @State private var selectTypes = ["지출", "수입"]
+    
+    @State private var selectTypes = [NSLocalizedString("지출", comment: ""), NSLocalizedString("수입", comment: "")]
     @State private var selectedType: Int
     @State private var showDatePicker = false
     @State private var showCategoryPicker = false
@@ -27,8 +30,8 @@ struct DetailSheet: View {
     @State private var isEditingPlace = false
     @FocusState private var isPriceFieldFocused: Bool
     @FocusState private var isMemoFieldFocused: Bool
-    @State private var showAmountAlert = false
-    @State private var showPlaceAlert = false
+    @State private var showAlert = false
+    @State private var alertText = ""
     var isEdit: Bool
     
     @State private var placeGrayOpacity: Double = 0.0
@@ -111,7 +114,7 @@ struct DetailSheet: View {
                             .keyboardType(.numberPad)
                             .focused($isPriceFieldFocused)
                             .fixedSize()
-                            .onChange(of: amountString) { _ in
+                            .onChange(of: amountString) {
                                 transaction.amount = Int(amountString.replacingOccurrences(of: ",", with: "")) ?? 0
                                 amountString = addCommasToNumber(String(transaction.amount))
                             }
@@ -211,7 +214,7 @@ struct DetailSheet: View {
                 }
                 .frame(height: 40)
                 if (speechRecognitionManager.recognizedText.isEmpty) {
-                    Text("예시) フェミマで300円")
+                    Text("예시) 편의점에서 300엔")
                         .font(.Light18)
                         .foregroundColor(.darkGray)
                         .padding(.vertical, 8)
@@ -249,10 +252,13 @@ struct DetailSheet: View {
                 }
                 .padding(.bottom, 20)
                 Button(action: {
+                    print(transaction.amount)
                     if transaction.place == "" {
-                        showPlaceAlert = true
+                        alertText = NSLocalizedString("장소를 입력하세요!", comment: "")
+                        showAlert = true
                     } else if transaction.amount == 0 {
-                        showAmountAlert = true
+                        alertText = NSLocalizedString("금액을 입력하세요!", comment: "")
+                        showAlert = true
                     } else {
                         printTransaction()
                         if isEdit {
@@ -272,15 +278,9 @@ struct DetailSheet: View {
                         .cornerRadius(10)
                 }
                 .padding(.bottom, 20)
-                .alert(isPresented: $showAmountAlert) {
+                .alert(isPresented: $showAlert) {
                     Alert(
-                        title: Text("금액을 입력하세요!"),
-                        dismissButton: .default(Text("확인"))
-                    )
-                }
-                .alert(isPresented: $showPlaceAlert) {
-                    Alert(
-                        title: Text("장소를 입력하세요!"),
+                        title: Text(alertText),
                         dismissButton: .default(Text("확인"))
                     )
                 }
@@ -319,7 +319,12 @@ struct DetailSheet: View {
             }
         }
         .onChange(of: speechRecognitionManager.recognizedText) {
-            var taggedTextDic = textToTags(speechRecognitionManager.recognizedText)
+            var taggedTextDic: [String: [String]] = [:]
+            if appLanguage == "ko" {
+                taggedTextDic = textToTagsKR(speechRecognitionManager.recognizedText)
+            } else if appLanguage == "ja" {
+                taggedTextDic = textToTagsJP(speechRecognitionManager.recognizedText)
+            }
             taggedTextDic.forEach { (key: String, value: [String]) in
                 if key == "Location" {
                     if value[0] != transaction.place {
@@ -460,12 +465,12 @@ func addCommasToNumber(_ input: String) -> String {
     return input
 }
 
-func textToTags(_ text: String) -> [String: [String]] {
+func textToTagsJP(_ text: String) -> [String: [String]] {
     do {
-        let mlModel = try MoneySpeechModel(configuration: MLModelConfiguration()).model
+        let mlModel = try MoneySpeechModelJP(configuration: MLModelConfiguration()).model
 
         let customModel = try NLModel(mlModel: mlModel)
-        let customTagScheme = NLTagScheme("MoneySpeechModel")
+        let customTagScheme = NLTagScheme("MoneySpeechModelJP")
         
         let tagger = NLTagger(tagSchemes: [.nameType, customTagScheme])
         tagger.string = text
@@ -499,6 +504,65 @@ func textToTags(_ text: String) -> [String: [String]] {
     }
 }
 
+func textToTagsKR(_ text: String) -> [String: [String]] {
+    do {
+        let mlModel = try MoneySpeechModelKR(configuration: MLModelConfiguration()).model
+
+        let customModel = try NLModel(mlModel: mlModel)
+        let customTagScheme = NLTagScheme("MoneySpeechModelKR")
+        
+        let tagger = NLTagger(tagSchemes: [.nameType, customTagScheme])
+        tagger.string = text
+        tagger.setModels([customModel], forTagScheme: customTagScheme)
+        
+        var tagsDict: [String: [String]] = [:]
+        
+        tagger.enumerateTags(in: text.startIndex..<text.endIndex, unit: .word, scheme: customTagScheme, options: .omitWhitespace) { tag, tokenRange in
+            if let tag = tag {
+                let tagValue = tag.rawValue
+                let token = String(text[tokenRange])
+                
+                if tagsDict[tagValue] != nil {
+                    tagsDict[tagValue]?.append(token)
+                } else {
+                    tagsDict[tagValue] = [token]
+                }
+            }
+            return true
+        }
+        
+        for (key, tokens) in tagsDict {
+            var joinedString = tokens.joined()
+            
+            if key == "Location" {
+                let suffixesToRemove = ["을", "를", "에서"]
+                for suffix in suffixesToRemove {
+                    if joinedString.hasSuffix(suffix) {
+                        joinedString = String(joinedString.dropLast(suffix.count))
+                        break
+                    }
+                }
+            } else if key == "Date" {
+                let suffixesToRemove = ["에", "날"]
+                for suffix in suffixesToRemove {
+                    if joinedString.hasSuffix(suffix) {
+                        joinedString = String(joinedString.dropLast(suffix.count))
+                    }
+                }
+                joinedString = joinedString.replacingOccurrences(of: " ", with: "")
+            }
+            
+            tagsDict[key] = [joinedString]
+        }
+        
+        print(tagsDict)
+        return(tagsDict)
+    } catch {
+        print(error)
+        return [:]
+    }
+}
+
 func extractNumbers(from text: String) -> Int {
     let numbers = text.filter { "0123456789".contains($0) }
     return Int(numbers) ?? 0
@@ -510,13 +574,13 @@ func updateDate(from value: String) -> Date? {
     let currentDate = Date()
     
     let dateFormatter = DateFormatter()
-    dateFormatter.locale = Locale(identifier: "ja_JP")
+    dateFormatter.locale = Locale(identifier: NSLocalizedString("ko_KR", comment: ""))
     
-    if let fullDate = getDate(from: value, using: "yyyy年M月d日"), fullDate <= currentDate {
+    if let fullDate = getDate(from: value, using: NSLocalizedString("yyyy년M월d일", comment: "")), fullDate <= currentDate {
         return fullDate
-    } else if let monthDay = getDate(from: "\(currentYear)年\(value)", using: "yyyy年M月d日"), monthDay <= currentDate {
+    } else if let monthDay = getDate(from: "\(currentYear)\(NSLocalizedString("년", comment: ""))\(value)", using: NSLocalizedString("yyyy년M월d일", comment: "")), monthDay <= currentDate {
         return monthDay
-    } else if let dayOnly = getDate(from: "\(currentYear)年\(currentMonth)月\(value)", using: "yyyy年M月d日"), dayOnly <= currentDate {
+    } else if let dayOnly = getDate(from: "\(currentYear)\(NSLocalizedString("년", comment: ""))\(currentMonth)\(NSLocalizedString("월", comment: ""))\(value)", using: NSLocalizedString("yyyy년M월d일", comment: "")), dayOnly <= currentDate {
         return dayOnly
     }
     

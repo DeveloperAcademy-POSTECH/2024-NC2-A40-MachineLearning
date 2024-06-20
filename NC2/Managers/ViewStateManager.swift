@@ -8,7 +8,7 @@
 import SwiftUI
 
 class ViewStateManager: ObservableObject {
-    @Published var viewState: ViewState = .home
+    @Published var viewState: ViewState = .splash
 }
 
 enum ViewState {

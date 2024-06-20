@@ -95,7 +95,14 @@ struct HomeView: View {
                     .padding(.vertical, 10)
                 // 요일 표시
                 HStack(spacing: 0) {
-                    ForEach(["일", "월", "화", "수", "목", "금", "토"], id: \.self) { day in
+                    ForEach([
+                        NSLocalizedString("일", comment: ""),
+                        NSLocalizedString("월", comment: ""),
+                        NSLocalizedString("화", comment: ""),
+                        NSLocalizedString("수", comment: ""),
+                        NSLocalizedString("목", comment: ""),
+                        NSLocalizedString("금", comment: ""),
+                        NSLocalizedString("토", comment: "")], id: \.self) { day in
                         Text(day)
                             .font(.system(size: 12, weight: .medium))
                             .frame(maxWidth: .infinity)
@@ -122,7 +129,7 @@ struct HomeView: View {
                     Spacer()
                     VStack {
                         HStack(spacing: 0) {
-                            Text(monthFormatter.string(from: homeViewModel.currentMonth) + "월 ").font(.system(size: 12, weight: .light))
+                            Text(monthFormatter.string(from: homeViewModel.currentMonth) + NSLocalizedString("월", comment: "") + " ").font(.system(size: 12, weight: .light))
                             Text("지출").font(.system(size: 12, weight: .light)).foregroundColor(.red)
                         }
                         .padding(.bottom, 1)
@@ -135,7 +142,7 @@ struct HomeView: View {
                     Spacer()
                     VStack {
                         HStack(spacing: 0) {
-                            Text(monthFormatter.string(from: homeViewModel.currentMonth) + "월 ").font(.system(size: 12, weight: .light))
+                            Text(monthFormatter.string(from: homeViewModel.currentMonth) + NSLocalizedString("월", comment: "") + " ").font(.system(size: 12, weight: .light))
                             Text("수입").font(.system(size: 12, weight: .light)).foregroundColor(.green)
                         }
                         .padding(.bottom, 1)
@@ -187,6 +194,19 @@ struct HomeView: View {
             }
         }
         .dontAdaptsToKeyboard()
+        .onOpenURL { url in
+            if url.scheme == "NC2" && url.host == "openDetailSheet" {
+                self.selectedTransaction = Transaction(
+                    place: "",
+                    amount: 0,
+                    transactionType: .outcome,
+                    displayDate: homeViewModel.selectedDate,
+                    createDate: Date(),
+                    category: .none,
+                    memo: ""
+                )
+            }
+        }
         .sheet(item: $selectedTransaction) { transaction in
             DetailSheet(homeViewModel: homeViewModel, transaction: transaction, isEdit: isEditMode)
                 .onDisappear {
@@ -252,7 +272,7 @@ struct TransactionListView: View {
     
     private func dateHeader(for date: Date) -> String {
         if Calendar.current.isDateInToday(date) {
-            return "오늘"
+            return NSLocalizedString("오늘", comment: "")
         } else {
             return dateFormatter.string(from: date)
         }
@@ -297,8 +317,8 @@ struct TransactionRow: View {
 
 let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.dateFormat = "d일 EEEE"
-    formatter.locale = Locale(identifier: "ko_KR")
+    formatter.dateFormat = NSLocalizedString("d일 EEEE", comment: "")
+    formatter.locale = Locale(identifier: NSLocalizedString("ko_KR", comment: ""))
     return formatter
 }()
 

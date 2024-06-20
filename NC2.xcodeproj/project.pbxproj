@@ -11,8 +11,16 @@
 		2A2083472C219BD400A3F224 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2083462C219BD400A3F224 /* CalendarView.swift */; };
 		2A20834A2C21EFD800A3F224 /* TransactionDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2083492C21EFD800A3F224 /* TransactionDataManager.swift */; };
 		2A20834D2C22A3A600A3F224 /* SpeechRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A20834C2C22A3A600A3F224 /* SpeechRecognitionManager.swift */; };
-		2A20834F2C22ADED00A3F224 /* MoneySpeechModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2A20834E2C22ADED00A3F224 /* MoneySpeechModel.mlmodel */; };
 		2A7A8B9F2C22D64900C310E5 /* DontAdaptsToKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A8B9E2C22D64900C310E5 /* DontAdaptsToKeyboard.swift */; };
+		2A7A8BEB2C23F81F00C310E5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A7A8BA62C23F31D00C310E5 /* WidgetKit.framework */; };
+		2A7A8BEC2C23F81F00C310E5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A7A8BA82C23F31D00C310E5 /* SwiftUI.framework */; };
+		2A7A8BEF2C23F81F00C310E5 /* CircularWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A8BEE2C23F81F00C310E5 /* CircularWidgetBundle.swift */; };
+		2A7A8BF12C23F81F00C310E5 /* Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A8BF02C23F81F00C310E5 /* Widget.swift */; };
+		2A7A8BF32C23F82100C310E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A7A8BF22C23F82100C310E5 /* Assets.xcassets */; };
+		2A7A8BF72C23F82100C310E5 /* CircularWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2A7A8BEA2C23F81F00C310E5 /* CircularWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2A7A8BFE2C24043900C310E5 /* MoneySpeechModelJP.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A8BFD2C24043900C310E5 /* MoneySpeechModelJP.mlmodel */; };
+		2A7A8C002C241DEB00C310E5 /* MoneySpeechModelKR.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A8BFF2C241DEB00C310E5 /* MoneySpeechModelKR.mlmodel */; };
+		2A7A8C062C243FED00C310E5 /* RectangularWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A8C052C243FED00C310E5 /* RectangularWidget.swift */; };
 		2A9DB8E12C2002F200B37BD9 /* ViewStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DB8E02C2002F200B37BD9 /* ViewStateManager.swift */; };
 		2A9DB8E32C20035800B37BD9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DB8E22C20035800B37BD9 /* ContentView.swift */; };
 		2A9DB8E62C2003D200B37BD9 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9DB8E52C2003D200B37BD9 /* SplashView.swift */; };
@@ -36,6 +44,16 @@
 		2AAD3AB82C1CCA9700D07AFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AAD3AB72C1CCA9700D07AFF /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2A7A8BF52C23F82100C310E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2AAD3AA82C1CCA9500D07AFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2A7A8BE92C23F81F00C310E5;
+			remoteInfo = CircularWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		2A7A8BBC2C23F31E00C310E5 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -43,6 +61,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				2A7A8BF72C23F82100C310E5 /* CircularWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,10 +73,17 @@
 		2A2083462C219BD400A3F224 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		2A2083492C21EFD800A3F224 /* TransactionDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataManager.swift; sourceTree = "<group>"; };
 		2A20834C2C22A3A600A3F224 /* SpeechRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionManager.swift; sourceTree = "<group>"; };
-		2A20834E2C22ADED00A3F224 /* MoneySpeechModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MoneySpeechModel.mlmodel; sourceTree = "<group>"; };
 		2A7A8B9E2C22D64900C310E5 /* DontAdaptsToKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DontAdaptsToKeyboard.swift; sourceTree = "<group>"; };
 		2A7A8BA62C23F31D00C310E5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		2A7A8BA82C23F31D00C310E5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		2A7A8BEA2C23F81F00C310E5 /* CircularWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CircularWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A7A8BEE2C23F81F00C310E5 /* CircularWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularWidgetBundle.swift; sourceTree = "<group>"; };
+		2A7A8BF02C23F81F00C310E5 /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
+		2A7A8BF22C23F82100C310E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2A7A8BF42C23F82100C310E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2A7A8BFD2C24043900C310E5 /* MoneySpeechModelJP.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MoneySpeechModelJP.mlmodel; sourceTree = "<group>"; };
+		2A7A8BFF2C241DEB00C310E5 /* MoneySpeechModelKR.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MoneySpeechModelKR.mlmodel; sourceTree = "<group>"; };
+		2A7A8C052C243FED00C310E5 /* RectangularWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularWidget.swift; sourceTree = "<group>"; };
 		2A9DB8E02C2002F200B37BD9 /* ViewStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStateManager.swift; sourceTree = "<group>"; };
 		2A9DB8E22C20035800B37BD9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2A9DB8E52C2003D200B37BD9 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
@@ -85,6 +111,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2A7A8BE72C23F81F00C310E5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A7A8BEC2C23F81F00C310E5 /* SwiftUI.framework in Frameworks */,
+				2A7A8BEB2C23F81F00C310E5 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2AAD3AAD2C1CCA9500D07AFF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -118,6 +153,18 @@
 				2A7A8BA82C23F31D00C310E5 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2A7A8BED2C23F81F00C310E5 /* CircularWidget */ = {
+			isa = PBXGroup;
+			children = (
+				2A7A8BEE2C23F81F00C310E5 /* CircularWidgetBundle.swift */,
+				2A7A8BF02C23F81F00C310E5 /* Widget.swift */,
+				2A7A8C052C243FED00C310E5 /* RectangularWidget.swift */,
+				2A7A8BF22C23F82100C310E5 /* Assets.xcassets */,
+				2A7A8BF42C23F82100C310E5 /* Info.plist */,
+			);
+			path = CircularWidget;
 			sourceTree = "<group>";
 		};
 		2A9DB8DF2C2002DA00B37BD9 /* Managers */ = {
@@ -190,6 +237,7 @@
 			children = (
 				2A9DB8E72C20060300B37BD9 /* Localizable.xcstrings */,
 				2AAD3AB22C1CCA9500D07AFF /* NC2 */,
+				2A7A8BED2C23F81F00C310E5 /* CircularWidget */,
 				2A7A8BA52C23F31D00C310E5 /* Frameworks */,
 				2AAD3AB12C1CCA9500D07AFF /* Products */,
 			);
@@ -199,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				2AAD3AB02C1CCA9500D07AFF /* NC2.app */,
+				2A7A8BEA2C23F81F00C310E5 /* CircularWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,7 +262,8 @@
 				2A9DB8E42C2003BD00B37BD9 /* Views */,
 				2A9DB8E22C20035800B37BD9 /* ContentView.swift */,
 				2AAD3AB32C1CCA9500D07AFF /* NC2App.swift */,
-				2A20834E2C22ADED00A3F224 /* MoneySpeechModel.mlmodel */,
+				2A7A8BFD2C24043900C310E5 /* MoneySpeechModelJP.mlmodel */,
+				2A7A8BFF2C241DEB00C310E5 /* MoneySpeechModelKR.mlmodel */,
 				2AAD3AB72C1CCA9700D07AFF /* Assets.xcassets */,
 				2AAD3AB92C1CCA9700D07AFF /* NC2.entitlements */,
 				2A9DB9052C2007B300B37BD9 /* Info.plist */,
@@ -224,6 +274,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2A7A8BE92C23F81F00C310E5 /* CircularWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A7A8BF82C23F82100C310E5 /* Build configuration list for PBXNativeTarget "CircularWidgetExtension" */;
+			buildPhases = (
+				2A7A8BE62C23F81F00C310E5 /* Sources */,
+				2A7A8BE72C23F81F00C310E5 /* Frameworks */,
+				2A7A8BE82C23F81F00C310E5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CircularWidgetExtension;
+			productName = CircularWidgetExtension;
+			productReference = 2A7A8BEA2C23F81F00C310E5 /* CircularWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		2AAD3AAF2C1CCA9500D07AFF /* NC2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2AAD3AD52C1CCA9700D07AFF /* Build configuration list for PBXNativeTarget "NC2" */;
@@ -236,6 +303,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2A7A8BF62C23F82100C310E5 /* PBXTargetDependency */,
 			);
 			name = NC2;
 			productName = NC2;
@@ -252,6 +320,9 @@
 				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					2A7A8BE92C23F81F00C310E5 = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					2AAD3AAF2C1CCA9500D07AFF = {
 						CreatedOnToolsVersion = 15.4;
 					};
@@ -259,10 +330,9 @@
 			};
 			buildConfigurationList = 2AAD3AAB2C1CCA9500D07AFF /* Build configuration list for PBXProject "NC2" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
 				ko,
 				ja,
@@ -273,11 +343,20 @@
 			projectRoot = "";
 			targets = (
 				2AAD3AAF2C1CCA9500D07AFF /* NC2 */,
+				2A7A8BE92C23F81F00C310E5 /* CircularWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2A7A8BE82C23F81F00C310E5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A7A8BF32C23F82100C310E5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2AAD3AAE2C1CCA9500D07AFF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -299,11 +378,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2A7A8BE62C23F81F00C310E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A7A8C062C243FED00C310E5 /* RectangularWidget.swift in Sources */,
+				2A7A8BF12C23F81F00C310E5 /* Widget.swift in Sources */,
+				2A7A8BEF2C23F81F00C310E5 /* CircularWidgetBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2AAD3AAC2C1CCA9500D07AFF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A20834F2C22ADED00A3F224 /* MoneySpeechModel.mlmodel in Sources */,
+				2A7A8C002C241DEB00C310E5 /* MoneySpeechModelKR.mlmodel in Sources */,
 				2A9DB9232C201E8600B37BD9 /* HomeView.swift in Sources */,
 				2A7A8B9F2C22D64900C310E5 /* DontAdaptsToKeyboard.swift in Sources */,
 				2A20834D2C22A3A600A3F224 /* SpeechRecognitionManager.swift in Sources */,
@@ -316,6 +405,7 @@
 				2A9DB8E62C2003D200B37BD9 /* SplashView.swift in Sources */,
 				2A9DB8E32C20035800B37BD9 /* ContentView.swift in Sources */,
 				2A9DB91F2C20107500B37BD9 /* OnboardingView.swift in Sources */,
+				2A7A8BFE2C24043900C310E5 /* MoneySpeechModelJP.mlmodel in Sources */,
 				2A20834A2C21EFD800A3F224 /* TransactionDataManager.swift in Sources */,
 				2AAD3AB42C1CCA9500D07AFF /* NC2App.swift in Sources */,
 				2A9DB9252C2062AE00B37BD9 /* DetailSheet.swift in Sources */,
@@ -324,7 +414,74 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		2A7A8BF62C23F82100C310E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2A7A8BE92C23F81F00C310E5 /* CircularWidgetExtension */;
+			targetProxy = 2A7A8BF52C23F82100C310E5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		2A7A8BF92C23F82100C310E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X3V79774F4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CircularWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CircularWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.devjonny.NC2.CircularWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2A7A8BFA2C23F82100C310E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X3V79774F4;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CircularWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CircularWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = me.devjonny.NC2.CircularWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		2AAD3AD32C1CCA9700D07AFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -377,6 +534,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MonEasy;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -432,6 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MonEasy;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -442,6 +601,7 @@
 		2AAD3AD62C1CCA9700D07AFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NC2/NC2.entitlements;
@@ -483,6 +643,7 @@
 		2AAD3AD72C1CCA9700D07AFF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NC2/NC2.entitlements;
@@ -524,6 +685,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2A7A8BF82C23F82100C310E5 /* Build configuration list for PBXNativeTarget "CircularWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A7A8BF92C23F82100C310E5 /* Debug */,
+				2A7A8BFA2C23F82100C310E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2AAD3AAB2C1CCA9500D07AFF /* Build configuration list for PBXProject "NC2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

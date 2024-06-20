@@ -19,7 +19,7 @@ class SpeechRecognitionManager: NSObject, ObservableObject {
     
     override init() {
         super.init()
-        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "ja-JP"))
+        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: NSLocalizedString("ko-KR", comment: "")))
     }
     
     func startRecording() {
