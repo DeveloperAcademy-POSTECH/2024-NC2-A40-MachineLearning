@@ -5,7 +5,8 @@
 (추후 만들어진 유튜브 링크 추가)
 
 ## 💡 About Machine Learning
-**프로세스**
+![process](https://github.com/DeveloperAcademy-POSTECH/2024-NC2-A40-MachineLearning/assets/30366858/504b807c-0d9f-408a-8dd9-3e8ebd5e57ee)
+
 
 1. 이미지, 텍스트, 표 등을 **Create ML**에 학습
 2. **Core ML Model**이 이것을 통해 모델을 생성하거나, 외부 라이브러리를 사용한 후 Core ML 형식으로 변경
@@ -30,7 +31,7 @@
 
 자연어 텍스트를 분석하고, 언어별 메타데이터를 추론
 
-개체명 인식 예시
+![naturallanguage](https://github.com/DeveloperAcademy-POSTECH/2024-NC2-A40-MachineLearning/assets/30366858/2def2698-ffac-4a44-a057-537fed2c0bea)
 
 **개체명 인식: 언어적 태깅을 사용하여, 문자열의 개체명을 지정*
 
@@ -88,7 +89,9 @@ ML 기술 자체만을 중점적으로 보여주기보다, **우리 서비스에
 → 매일 거래 내역을 기록하고 싶은데 타이핑이 귀찮은 유저가 빠르고 편리하게 접근해서 기록할 수 있다.
 
 ## 🖼️ Prototype
-(프로토타입과 설명 추가)
+![1](https://github.com/DeveloperAcademy-POSTECH/2024-NC2-A40-MachineLearning/assets/30366858/e383a2b5-327b-4ebb-b93d-9585fd1818bf)
+
+![2](https://github.com/DeveloperAcademy-POSTECH/2024-NC2-A40-MachineLearning/assets/30366858/5980924c-9533-4b68-b7db-e8ff7cc5e92b)
 
 ## 🛠️ About Code
 CreateML을 통해 아래와 같은 문장 데이터를 라벨링 (약 300문장 학습)
