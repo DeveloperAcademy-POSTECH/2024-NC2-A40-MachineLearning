@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct NC2App: App {
+struct MonEasyApp: App {
     @StateObject private var viewStateManager = ViewStateManager()
     
 //    var modelContainer: ModelContainer = {
