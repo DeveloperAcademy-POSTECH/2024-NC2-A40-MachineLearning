@@ -40,6 +40,16 @@
     "%lld" : {
 
     },
+    "%lld 엔" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 円"
+          }
+        }
+      }
+    },
     "+%lld" : {
 
     },
@@ -54,7 +64,14 @@
       }
     },
     "0" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0"
+          }
+        }
+      }
     },
     "d일 EEEE" : {
       "extractionState" : "manual",
@@ -66,9 +83,6 @@
           }
         }
       }
-    },
-    "Key" : {
-      "extractionState" : "manual"
     },
     "ko_KR" : {
       "extractionState" : "manual",
@@ -137,6 +151,17 @@
         }
       }
     },
+    "교육" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "教育"
+          }
+        }
+      }
+    },
     "금" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -200,12 +225,56 @@
         }
       }
     },
+    "미등록" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未登録"
+          }
+        }
+      }
+    },
+    "바" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "居酒屋"
+          }
+        }
+      }
+    },
     "버튼을 눌러서 음성으로 내역을 기록해보세요." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ボタンを押して音声で記録してみてください。"
+          }
+        }
+      }
+    },
+    "병원" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "病院"
+          }
+        }
+      }
+    },
+    "보험" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保険"
           }
         }
       }
@@ -217,6 +286,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "写真で"
+          }
+        }
+      }
+    },
+    "쇼핑" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "買い物"
           }
         }
       }
@@ -252,6 +332,17 @@
         }
       }
     },
+    "식당" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食堂"
+          }
+        }
+      }
+    },
     "액션 버튼" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -269,6 +360,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "円"
+          }
+        }
+      }
+    },
+    "여행" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "旅行"
           }
         }
       }
@@ -303,6 +405,17 @@
         }
       }
     },
+    "용돈" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お小遣い"
+          }
+        }
+      }
+    },
     "월" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -310,6 +423,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "月"
+          }
+        }
+      }
+    },
+    "월급" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月給"
           }
         }
       }
@@ -361,6 +485,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "音声で"
+          }
+        }
+      }
+    },
+    "이자" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "利子"
           }
         }
       }
@@ -426,6 +561,17 @@
         }
       }
     },
+    "카페" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カフェ"
+          }
+        }
+      }
+    },
     "커스텀 " : {
       "extractionState" : "stale",
       "localizations" : {
@@ -444,6 +590,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "土"
+          }
+        }
+      }
+    },
+    "편의점" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コンビニ"
           }
         }
       }

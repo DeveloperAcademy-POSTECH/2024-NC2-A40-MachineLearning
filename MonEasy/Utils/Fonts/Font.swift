@@ -23,14 +23,18 @@ extension Font {
     static let SemiBold16: Font = .custom("PretendardJP-SemiBold", size: 16)
     static let SemiBold13: Font = .custom("PretendardJP-SemiBold", size: 13)
 
-    //Medium
+    // Medium
     static let Medium20: Font = .custom("PretendardJP-Medium", size: 20)
     static let Medium16: Font = .custom("PretendardJP-Medium", size: 16)
     static let Medium18: Font = .custom("PretendardJP-Medium", size: 18)
     static let Medium14: Font = .custom("PretendardJP-Medium", size: 14)
     static let Medium12: Font = .custom("PretendardJP-Medium", size: 12)
     static let Medium10: Font = .custom("PretendardJP-Medium", size: 10)
+    static let Medium9: Font = .custom("PretendardJP-Medium", size: 9)
     static let Medium8: Font = .custom("PretendardJP-Medium", size: 8)
+    
+    // Regular
+    static let Regular12: Font = .custom("PretendardJP-Regular", size: 12)
     
     // Light
     static let Light20: Font = .custom("PretendardJP-Light", size: 20)

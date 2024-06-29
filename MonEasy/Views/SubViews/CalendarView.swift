@@ -138,15 +138,14 @@ struct WeekView: View {
                         Circle()
                             .fill(Calendar.current.isDate(date, inSameDayAs: selectedDate) ? Color.blue : Color.clear)
                     )
-                    .padding(.bottom, 4)
                 if totalIncome > 0 {
                     Text("+\(totalIncome)")
-                        .font(.Medium8)
+                        .font(.Medium9)
                         .foregroundColor(.customGreen)
                 }
                 if totalOutcome > 0 {
                     Text("-\(totalOutcome)")
-                        .font(.Medium8)
+                        .font(.Medium9)
                         .foregroundColor(.darkGray)
                 }
                 Spacer()
@@ -201,5 +200,11 @@ let dayFormatter: DateFormatter = {
 func getLastDate(of date: Date) -> Date {
     var components = Calendar.current.dateComponents([.year, .month], from: date)
     components.day = Calendar.current.range(of: .day, in: .month, for: date)?.count
+    return Calendar.current.date(from: components) ?? date
+}
+
+func startOfMonth(for date: Date) -> Date {
+    var components = Calendar.current.dateComponents([.year, .month], from: date)
+    components.day = 1
     return Calendar.current.date(from: components) ?? date
 }

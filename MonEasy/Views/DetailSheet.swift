@@ -63,7 +63,7 @@ struct DetailSheet: View {
                     HStack (spacing: 0) {
                         if (isEditingPlace) {
                             TextField("위치", text: $transaction.place)
-                                .font(.Light16)
+                                .font(.Regular12)
                                 .fixedSize()
                                 .focused($isPlaceFieldFocused)
                                 .disabled(!isEditingPlace)
@@ -78,7 +78,7 @@ struct DetailSheet: View {
                                 }
                         } else {
                             TextField("위치", text: $transaction.place)
-                                .font(.Light16)
+                                .font(.Regular12)
                                 .fixedSize()
                                 .onTapGesture {
                                     isEditingPlace = true
@@ -91,10 +91,12 @@ struct DetailSheet: View {
                     .padding(4)
                     .background(Color.darkGray.opacity(placeGrayOpacity))
                     .cornerRadius(10)
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         isEditingPlace = true
                         isPlaceFieldFocused = true
                     }
+                    
                     Spacer()
                     if isEdit {
                         Button(action: {
@@ -129,6 +131,7 @@ struct DetailSheet: View {
                     .padding(4)
                     .background(Color.darkGray.opacity(amountGrayOpacity))
                     .cornerRadius(10)
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         isPriceFieldFocused = true
                     }
@@ -199,10 +202,10 @@ struct DetailSheet: View {
                 VStack (spacing: 0) {
                     if !isRecording {
                         Text("버튼을 눌러서 음성으로 내역을 기록해보세요.")
-                            .font(.Medium12)
+                            .font(.Medium10)
                             .foregroundColor(.darkGray)
                         Text("(날짜, 장소, 금액)")
-                            .font(.Medium12)
+                            .font(.Medium10)
                             .foregroundColor(.darkGray)
                             .padding(.bottom, 10)
                     } else {
@@ -392,31 +395,31 @@ struct CategoryPicker: View {
     func categoryName(_ category: CategoryType) -> String {
         switch category {
         case .none:
-            return "미등록"
+            return NSLocalizedString("미등록", comment: "")
         case .food:
-            return "식당"
+            return NSLocalizedString("식당", comment: "")
         case .education:
-            return "교육"
+            return NSLocalizedString("교육", comment: "")
         case .drink:
-            return "바"
+            return NSLocalizedString("바", comment: "")
         case .cafe:
-            return "카페"
+            return NSLocalizedString("카페", comment: "")
         case .store:
-            return "편의점"
+            return NSLocalizedString("편의점", comment: "")
         case .shopping:
-            return "쇼핑"
+            return NSLocalizedString("쇼핑", comment: "")
         case .hospital:
-            return "병원"
+            return NSLocalizedString("병원", comment: "")
         case .travel:
-            return "여행"
+            return NSLocalizedString("여행", comment: "")
         case .allowance:
-            return "용돈"
+            return NSLocalizedString("용돈", comment: "")
         case .salary:
-            return "월급"
+            return NSLocalizedString("월급", comment: "")
         case .interest:
-            return "이자"
+            return NSLocalizedString("이자", comment: "")
         case .insurance:
-            return "보험"
+            return NSLocalizedString("보험", comment: "")
         }
     }
     

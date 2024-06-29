@@ -111,7 +111,9 @@ struct HomeView: View {
                 .padding(.horizontal, 20)
                 CalendarView(isWeeklyView: $homeViewModel.isWeeklyView, currentMonth: $homeViewModel.currentMonth, selectedDate: $homeViewModel.selectedDate, transactions: homeViewModel.transactions)
                     .gesture(
-                        DragGesture().onChanged { value in
+                        DragGesture().onEnded { value in
+                            let today = Date()
+                            
                             if value.translation.height < -50 {
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     homeViewModel.isWeeklyView = true
@@ -119,6 +121,49 @@ struct HomeView: View {
                             } else if value.translation.height > 50 {
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     homeViewModel.isWeeklyView = false
+                                }
+                            } else if value.translation.width > 50 {
+                                // 스크롤 왼쪽으로 (이전 달 또는 이전 주)
+                                withAnimation {
+                                    if homeViewModel.isWeeklyView {
+                                        let previousWeek = Calendar.current.date(byAdding: .weekOfMonth, value: -1, to: homeViewModel.selectedDate) ?? homeViewModel.selectedDate
+                                        if Calendar.current.isDate(today, equalTo: previousWeek, toGranularity: .weekOfYear) {
+                                            homeViewModel.selectedDate = today
+                                        } else {
+                                            homeViewModel.selectedDate = previousWeek
+                                            if !Calendar.current.isDate(homeViewModel.selectedDate, equalTo: homeViewModel.currentMonth, toGranularity: .month) {
+                                                homeViewModel.currentMonth = Calendar.current.date(byAdding: .month, value: -1, to: homeViewModel.currentMonth) ?? homeViewModel.currentMonth
+                                                homeViewModel.selectedDate = getLastDate(of: homeViewModel.currentMonth)
+                                            }
+                                        }
+                                    } else {
+                                        homeViewModel.currentMonth = Calendar.current.date(byAdding: .month, value: -1, to: homeViewModel.currentMonth) ?? homeViewModel.currentMonth
+                                        homeViewModel.selectedDate = isCurrentMonth(date: homeViewModel.currentMonth) ? today : getLastDate(of: homeViewModel.currentMonth)
+                                    }
+                                }
+                            } else if value.translation.width < -50 {
+                                // 스크롤 오른쪽으로 (다음 달 또는 다음 주)
+                                withAnimation {
+                                    if homeViewModel.isWeeklyView {
+                                        let nextWeek = Calendar.current.date(byAdding: .weekOfMonth, value: 1, to: homeViewModel.selectedDate) ?? homeViewModel.selectedDate
+                                        if nextWeek > today {
+                                            homeViewModel.selectedDate = today
+                                        } else {
+                                            homeViewModel.selectedDate = nextWeek
+                                            if !Calendar.current.isDate(homeViewModel.selectedDate, equalTo: homeViewModel.currentMonth, toGranularity: .month) {
+                                                homeViewModel.currentMonth = Calendar.current.date(byAdding: .month, value: 1, to: homeViewModel.currentMonth) ?? homeViewModel.currentMonth
+                                                homeViewModel.selectedDate = startOfMonth(for: homeViewModel.currentMonth)
+                                            }
+                                        }
+                                    } else {
+                                        let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: homeViewModel.currentMonth) ?? homeViewModel.currentMonth
+                                        if nextMonth > today {
+                                            homeViewModel.selectedDate = today
+                                        } else {
+                                            homeViewModel.currentMonth = nextMonth
+                                            homeViewModel.selectedDate = isCurrentMonth(date: homeViewModel.currentMonth) ? today : getLastDate(of: homeViewModel.currentMonth)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -132,7 +177,7 @@ struct HomeView: View {
                             Text("지출").font(.system(size: 12, weight: .light)).foregroundColor(.red)
                         }
                         .padding(.bottom, 1)
-                        Text("\(homeViewModel.totalOutcome(for: homeViewModel.currentMonth))").font(.system(size: 16, weight: .medium)).foregroundColor(.gray)
+                        Text("\(homeViewModel.totalOutcome(for: homeViewModel.currentMonth)) 엔").font(.system(size: 16, weight: .medium)).foregroundColor(.gray)
                     }
                     Spacer()
                     Divider()
@@ -145,7 +190,7 @@ struct HomeView: View {
                             Text("수입").font(.system(size: 12, weight: .light)).foregroundColor(.green)
                         }
                         .padding(.bottom, 1)
-                        Text("\(homeViewModel.totalIncome(for: homeViewModel.currentMonth))").font(.system(size: 16, weight: .medium)).foregroundColor(.green)
+                        Text("\(homeViewModel.totalIncome(for: homeViewModel.currentMonth)) 엔").font(.system(size: 16, weight: .medium)).foregroundColor(.green)
                     }
                     Spacer()
                 }
@@ -215,7 +260,6 @@ struct HomeView: View {
     }
 }
 
-
 struct TransactionListView: View {
     @ObservedObject var homeViewModel: HomeViewModel
     @Binding var selectedTransaction: Transaction?
@@ -225,14 +269,14 @@ struct TransactionListView: View {
         ScrollViewReader { proxy in
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 10) {
-                    ForEach(groupedTransactions, id: \.key) { date, transactions in
+                    ForEach(filteredTransactions, id: \.key) { date, transactions in
                         VStack(alignment: .leading, spacing: 0) {
                             Divider()
                             Section(header: Text(dateHeader(for: date))
                                 .font(.Medium12)
                                 .padding(.top, 6)
                                 .padding(.bottom, 10)) {
-                                    ForEach(transactions.sorted(by: { $0.createDate > $1.createDate }), id: \.id) { transaction in // 트랜잭션 정렬
+                                    ForEach(transactions.sorted(by: { $0.createDate > $1.createDate }), id: \.id) { transaction in
                                         TransactionRow(transaction: transaction) {
                                             selectedTransaction = transaction
                                             isEditMode = true
@@ -244,7 +288,7 @@ struct TransactionListView: View {
                     }
                     Spacer().frame(height: 60)
                 }
-                .onChange(of: homeViewModel.selectedDate) { newValue in
+                .onChange(of: homeViewModel.selectedDate) { _, newValue in
                     withAnimation {
                         proxy.scrollTo(newValue, anchor: .top)
                     }
@@ -254,7 +298,7 @@ struct TransactionListView: View {
                 DragGesture().onChanged({
                     let isScrollUp = 0 > $0.translation.height
                     withAnimation {
-                        if(isScrollUp) {
+                        if isScrollUp {
                             homeViewModel.isWeeklyView = true
                         }
                     }
@@ -262,11 +306,13 @@ struct TransactionListView: View {
         }
     }
     
-    private var groupedTransactions: [(key: Date, value: [Transaction])] {
-        Dictionary(grouping: homeViewModel.transactions) { transaction in
+    private var filteredTransactions: [(key: Date, value: [Transaction])] {
+        let filtered = Dictionary(grouping: homeViewModel.transactions.filter { transaction in
+            Calendar.current.isDate(transaction.displayDate, equalTo: homeViewModel.selectedDate, toGranularity: .month)
+        }) { transaction in
             Calendar.current.startOfDay(for: transaction.displayDate)
         }
-        .sorted { $0.key > $1.key }
+        return filtered.sorted { $0.key > $1.key }
     }
     
     private func dateHeader(for date: Date) -> String {
@@ -320,6 +366,20 @@ let dateFormatter: DateFormatter = {
     formatter.locale = Locale(identifier: NSLocalizedString("ko_KR", comment: ""))
     return formatter
 }()
+
+private func startOfWeek(for date: Date) -> Date {
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)
+    return calendar.date(from: components) ?? date
+}
+
+private func endOfWeek(for date: Date) -> Date {
+    let calendar = Calendar.current
+    var components = DateComponents()
+    components.weekOfYear = 1
+    components.second = -1
+    return calendar.date(byAdding: components, to: startOfWeek(for: date)) ?? date
+}
 
 #Preview {
     HomeView()
