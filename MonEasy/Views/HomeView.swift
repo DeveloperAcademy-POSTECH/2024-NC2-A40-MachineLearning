@@ -58,25 +58,24 @@ struct HomeView: View {
 
                                     var calendar = Calendar.current
                                     calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+                                    calendar.timeZone = TimeZone.current
                                     let timeZoneOffset = TimeZone.current.secondsFromGMT()
 
                                     var components = calendar.dateComponents([.year, .month, .day], from: now)
+                                    components.day = components.day! - 1
                                     components.hour = 15 + (timeZoneOffset / 3600)
                                     components.minute = 0
                                     components.second = 0
 
-                                    if let newDate = calendar.date(from: components) {
-                                    } else {
-                                        print("Date creation failed")
-                                    }
-
                                     if let newDate = Calendar.current.date(from: components) {
+                                        print(newDate)
                                         homeViewModel.selectedDate = newDate
                                     } else {
                                         print("Date creation failed")
                                     }
                                 } else {
                                     homeViewModel.selectedDate = getLastDate(of: homeViewModel.currentMonth)
+                                    print(getLastDate(of: homeViewModel.currentMonth))
                                 }
                             }
                         }) {

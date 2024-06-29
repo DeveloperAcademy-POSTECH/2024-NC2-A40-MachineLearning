@@ -255,6 +255,7 @@
 		2AAD3AB22C1CCA9500D07AFF /* MonEasy */ = {
 			isa = PBXGroup;
 			children = (
+				2AEF33A42C30A62900FAD9A6 /* CreateMLModels */,
 				2A9DB9272C2063D700B37BD9 /* Models */,
 				2A9DB9082C200B1200B37BD9 /* Utils */,
 				2A9DB8DF2C2002DA00B37BD9 /* Managers */,
@@ -262,13 +263,20 @@
 				2A9DB8E42C2003BD00B37BD9 /* Views */,
 				2A9DB8E22C20035800B37BD9 /* ContentView.swift */,
 				2AAD3AB32C1CCA9500D07AFF /* MonEasyApp.swift */,
-				2A7A8BFD2C24043900C310E5 /* MoneySpeechModelJP.mlmodel */,
-				2A7A8BFF2C241DEB00C310E5 /* MoneySpeechModelKR.mlmodel */,
 				2AAD3AB72C1CCA9700D07AFF /* Assets.xcassets */,
 				2AAD3AB92C1CCA9700D07AFF /* MonEasy.entitlements */,
 				2A9DB9052C2007B300B37BD9 /* Info.plist */,
 			);
 			path = MonEasy;
+			sourceTree = "<group>";
+		};
+		2AEF33A42C30A62900FAD9A6 /* CreateMLModels */ = {
+			isa = PBXGroup;
+			children = (
+				2A7A8BFD2C24043900C310E5 /* MoneySpeechModelJP.mlmodel */,
+				2A7A8BFF2C241DEB00C310E5 /* MoneySpeechModelKR.mlmodel */,
+			);
+			path = CreateMLModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
