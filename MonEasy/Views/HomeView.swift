@@ -18,15 +18,15 @@ struct HomeView: View {
             VStack(spacing: 0) {
                 // 상단바 영역
                 ZStack {
-                    HStack {
-                        Spacer().frame(width: 10)
-                        Image(.icon)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 60, height: 35, alignment: .center)
-                            .clipped()
-                        Spacer()
-                    }
+//                    HStack {
+//                        Spacer().frame(width: 10)
+//                        Image(.icon)
+//                            .resizable()
+//                            .scaledToFill()
+//                            .frame(width: 60, height: 35, alignment: .center)
+//                            .clipped()
+//                        Spacer()
+//                    }
                     // 월 변경 및 표시
                     HStack(spacing: 0) {
                         Button(action: {
@@ -88,6 +88,7 @@ struct HomeView: View {
                     }
                     .padding(.horizontal)
                 }
+                .frame(height: 35)
                 // 커스텀 캘린더 뷰
                 Divider()
                     .padding(.horizontal, 26)

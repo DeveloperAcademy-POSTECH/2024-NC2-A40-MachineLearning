@@ -8,6 +8,8 @@
 import SwiftUI
 import NaturalLanguage
 import CoreML
+import AVFAudio
+import Speech
 
 struct DetailSheet: View {
     let appLanguage = Bundle.main.preferredLocalizations.first
@@ -31,6 +33,7 @@ struct DetailSheet: View {
     @FocusState private var isPriceFieldFocused: Bool
     @FocusState private var isMemoFieldFocused: Bool
     @State private var showAlert = false
+    @State private var showAccessAlert = false
     @State private var alertText = ""
     var isEdit: Bool
     
@@ -228,13 +231,19 @@ struct DetailSheet: View {
                 }
                 HStack {
                     Button(action: {
-                        if isRecording {
-                            speechRecognitionManager.stopRecording()
-                        } else {
-                            speechRecognitionManager.startRecording()
-                            speechRecognitionManager.recognizedText = ""
+                        checkPermissions { hasPermissions in
+                            if hasPermissions {
+                                if isRecording {
+                                    speechRecognitionManager.stopRecording()
+                                } else {
+                                    speechRecognitionManager.startRecording()
+                                    speechRecognitionManager.recognizedText = ""
+                                }
+                                isRecording.toggle()
+                            } else {
+                                showAccessAlert = true
+                            }
                         }
-                        isRecording.toggle()
                     }) {
                         ZStack {
                             if isRecording {
@@ -252,6 +261,13 @@ struct DetailSheet: View {
                         .padding()
                         .frame(width: 115, height: 115)
                     }
+                }
+                .alert(isPresented: $showAccessAlert) {
+                    Alert(
+                        title: Text(NSLocalizedString("권한필요", comment: "")),
+                        message: Text(NSLocalizedString("iPhone 설정 - MonEasy 에서 마이크 및 음성 인식 권한을 허용해주세요.", comment: "")),
+                        dismissButton: .default(Text("확인"))
+                    )
                 }
                 .padding(.bottom, 20)
                 Button(action: {
@@ -594,4 +610,25 @@ func getDate(from value: String, using format: String) -> Date? {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = format
     return dateFormatter.date(from: value)
+}
+
+func checkPermissions(completion: @escaping (Bool) -> Void) {
+    AVAudioApplication.requestRecordPermission { micGranted in
+        if micGranted {
+            SFSpeechRecognizer.requestAuthorization { authStatus in
+                DispatchQueue.main.async {
+                    switch authStatus {
+                    case .authorized:
+                        completion(true)
+                    default:
+                        completion(false)
+                    }
+                }
+            }
+        } else {
+            DispatchQueue.main.async {
+                completion(false)
+            }
+        }
+    }
 }

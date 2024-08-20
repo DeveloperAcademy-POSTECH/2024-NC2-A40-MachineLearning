@@ -11,6 +11,7 @@
 		2A2083472C219BD400A3F224 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2083462C219BD400A3F224 /* CalendarView.swift */; };
 		2A20834A2C21EFD800A3F224 /* TransactionDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2083492C21EFD800A3F224 /* TransactionDataManager.swift */; };
 		2A20834D2C22A3A600A3F224 /* SpeechRecognitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A20834C2C22A3A600A3F224 /* SpeechRecognitionManager.swift */; };
+		2A43BDA92C56D2730033C47B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2A43BDA72C56D2730033C47B /* InfoPlist.strings */; };
 		2A7A8B9F2C22D64900C310E5 /* DontAdaptsToKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7A8B9E2C22D64900C310E5 /* DontAdaptsToKeyboard.swift */; };
 		2A7A8BEB2C23F81F00C310E5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A7A8BA62C23F31D00C310E5 /* WidgetKit.framework */; };
 		2A7A8BEC2C23F81F00C310E5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A7A8BA82C23F31D00C310E5 /* SwiftUI.framework */; };
@@ -73,6 +74,8 @@
 		2A2083462C219BD400A3F224 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		2A2083492C21EFD800A3F224 /* TransactionDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDataManager.swift; sourceTree = "<group>"; };
 		2A20834C2C22A3A600A3F224 /* SpeechRecognitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionManager.swift; sourceTree = "<group>"; };
+		2A43BDA82C56D2730033C47B /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2A43BDAA2C56D2B50033C47B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2A7A8B9E2C22D64900C310E5 /* DontAdaptsToKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DontAdaptsToKeyboard.swift; sourceTree = "<group>"; };
 		2A7A8BA62C23F31D00C310E5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		2A7A8BA82C23F31D00C310E5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -235,6 +238,7 @@
 		2AAD3AA72C1CCA9500D07AFF = {
 			isa = PBXGroup;
 			children = (
+				2A43BDA72C56D2730033C47B /* InfoPlist.strings */,
 				2A9DB8E72C20060300B37BD9 /* Localizable.xcstrings */,
 				2AAD3AB22C1CCA9500D07AFF /* MonEasy */,
 				2A7A8BED2C23F81F00C310E5 /* CircularWidget */,
@@ -370,6 +374,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AAD3AB82C1CCA9700D07AFF /* Assets.xcassets in Resources */,
+				2A43BDA92C56D2730033C47B /* InfoPlist.strings in Resources */,
 				2A9DB9402C2067CD00B37BD9 /* PretendardJP-Regular.otf in Resources */,
 				2A9DB93E2C2067CD00B37BD9 /* PretendardJP-Black.otf in Resources */,
 				2A9DB9442C2067CD00B37BD9 /* PretendardJP-SemiBold.otf in Resources */,
@@ -429,6 +434,18 @@
 			targetProxy = 2A7A8BF52C23F82100C310E5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		2A43BDA72C56D2730033C47B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2A43BDA82C56D2730033C47B /* ko */,
+				2A43BDAA2C56D2B50033C47B /* ja */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		2A7A8BF92C23F82100C310E5 /* Debug */ = {
@@ -614,7 +631,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MonEasy/MonEasy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 202407304;
 				DEVELOPMENT_ASSET_PATHS = "\"MonEasy/Preview Content\"";
 				DEVELOPMENT_TEAM = X3V79774F4;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -622,8 +639,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MonEasy/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MonEasy;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = NSMicrophoneUsageDescription;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = NSSpeechRecognitionUsageDescription;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -634,15 +651,17 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.devjonny.MonEasy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -657,7 +676,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MonEasy/MonEasy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 202407304;
 				DEVELOPMENT_ASSET_PATHS = "\"MonEasy/Preview Content\"";
 				DEVELOPMENT_TEAM = X3V79774F4;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -665,8 +684,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MonEasy/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MonEasy;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = NSMicrophoneUsageDescription;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = NSSpeechRecognitionUsageDescription;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -677,15 +696,17 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = me.devjonny.MonEasy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import AVFoundation
+import Speech
 
 struct OnboardingView: View {
     @EnvironmentObject var viewStateManager: ViewStateManager
     @AppStorage("doneOnboard") private var doneOnboard: Bool = false
+    @State private var microphonePermission: Bool = false
+    @State private var speechRecognitionPermission: Bool = false
     
     var body: some View {
         VStack (spacing: 0) {
@@ -99,6 +103,35 @@ struct OnboardingView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 14)
             })
+        }
+        .onAppear {
+            requestMicrophonePermission()
+        }
+    }
+    
+    func requestMicrophonePermission() {
+        AVAudioSession.sharedInstance().requestRecordPermission { granted in
+            DispatchQueue.main.async {
+                microphonePermission = granted
+                if granted {
+                    requestSpeechRecognitionPermission()
+                }
+            }
+        }
+    }
+    
+    func requestSpeechRecognitionPermission() {
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            DispatchQueue.main.async {
+                switch authStatus {
+                case .authorized:
+                    speechRecognitionPermission = true
+                case .denied, .restricted, .notDetermined:
+                    speechRecognitionPermission = false
+                @unknown default:
+                    speechRecognitionPermission = false
+                }
+            }
         }
     }
 }

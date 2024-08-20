@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  MonEasy
+
+  Created by DevJonny on 2024/7/29.
+  
+*/
+
+MicrophoneUsageDescription = "음성으로 기록하기 위해 마이크를 사용합니다.";
+SpeechRecognitionUsageDescription = "음성으로 기록하기 위해 음성인식을 사용합니다.";

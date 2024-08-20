@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  MonEasy
+
+  Created by DevJonny on 2024/7/29.
+  
+*/
+
+NSMicrophoneUsageDescription = "音声で記録するためにマイクを使用します。";
+NSSpeechRecognitionUsageDescription = "音声で記録するために音声認識を使用します。";
